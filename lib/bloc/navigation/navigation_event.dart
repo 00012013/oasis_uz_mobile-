@@ -8,3 +8,5 @@ class TabChange extends NavigationEvent {
 
   TabChange({required this.tabIndex});
 }
+
+class FetchCottages extends NavigationEvent {}

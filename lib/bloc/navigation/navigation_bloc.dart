@@ -6,7 +6,7 @@ part 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc() : super(const NavigationInitial(0)) {
-    on<NavigationEvent>((event, emit) {
+    on<NavigationEvent>((event, emit) async {
       if (event is TabChange) {
         emit(NavigationInitial(event.tabIndex));
       }
