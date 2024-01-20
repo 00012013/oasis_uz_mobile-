@@ -18,4 +18,18 @@ class CottageRepository {
       throw Exception('Failed to load cottages');
     }
   }
+
+  Future<List<Cottage>> fetchPopulaarCottages() async {
+    final response = await http.get(Uri.parse('$api/api/cottage/get-all'));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+
+      final List<Cottage> cottages =
+          jsonList.map((json) => Cottage.fromJson(json)).toList();
+
+      return cottages;
+    } else {
+      throw Exception('Failed to load cottages');
+    }
+  }
 }

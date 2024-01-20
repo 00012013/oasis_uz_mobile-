@@ -22,9 +22,9 @@ Cottage _$CottageFromJson(Map<String, dynamic> json) => Cottage(
       bookedDates: (json['bookedDates'] as List<dynamic>?)
           ?.map((e) => DateTime.parse(e as String))
           .toList(),
-      attachment: json['attachment'] == null
+      mainAttachment: json['mainAttachment'] == null
           ? null
-          : Attachment.fromJson(json['attachment'] as Map<String, dynamic>),
+          : Attachment.fromJson(json['mainAttachment'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
@@ -40,5 +40,5 @@ Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
       'equipmentsList': instance.equipmentsList,
       'bookedDates':
           instance.bookedDates?.map((e) => e.toIso8601String()).toList(),
-      'attachment': instance.attachment?.toJson(),
+      'mainAttachment': instance.mainAttachment?.toJson(),
     };

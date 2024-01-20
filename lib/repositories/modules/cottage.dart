@@ -16,7 +16,7 @@ class Cottage {
   final int? totalRoomCount;
   final List<String>? equipmentsList;
   final List<DateTime>? bookedDates;
-  final Attachment? attachment;
+  final Attachment? mainAttachment;
 
   const Cottage({
     this.id,
@@ -30,7 +30,7 @@ class Cottage {
     this.totalRoomCount,
     this.equipmentsList,
     this.bookedDates,
-    this.attachment,
+    this.mainAttachment,
   });
 
   factory Cottage.fromJson(Map<String, dynamic> json) =>
