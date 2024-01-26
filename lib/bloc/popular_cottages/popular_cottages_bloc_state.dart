@@ -1,6 +1,6 @@
 part of 'popular_cottages_bloc_bloc.dart';
 
-sealed class PopularCottagesBlocState {
+abstract class PopularCottagesBlocState {
   const PopularCottagesBlocState();
 }
 
@@ -13,3 +13,9 @@ final class PopularCottagesLoaded extends PopularCottagesBlocState {
 }
 
 final class PopularCottagesLoading extends PopularCottagesBlocState {}
+
+final class FavoriteCottagesLoaded extends PopularCottagesBlocState {
+  final List<Cottage> cottages;
+
+  const FavoriteCottagesLoaded(this.cottages);
+}

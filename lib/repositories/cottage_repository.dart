@@ -32,4 +32,44 @@ class CottageRepository {
       throw Exception('Failed to load cottages');
     }
   }
+
+  Future<List<String>> fetchCottageNameByName(String name) async {
+    final response = await http.get(Uri.parse('$api/api/cottage/search/$name'));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+
+      final List<String> cottagesName =
+          jsonList.map((json) => json.toString()).toList();
+
+      return cottagesName;
+    } else {
+      throw Exception('Failed to load cottages');
+    }
+  }
+
+  Future<List<Cottage>> fetchFavoriteCottages(
+      List<int> favoriteCottageIds) async {
+    final Map<String, dynamic> requestBody = {
+      'cottageList': favoriteCottageIds,
+    };
+
+    final response = await http.post(
+      Uri.parse('$api/api/cottage/get/cottage-list'),
+      body: jsonEncode(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+
+      final List<Cottage> cottages =
+          jsonList.map((json) => Cottage.fromJson(json)).toList();
+
+      return cottages;
+    } else {
+      throw Exception('Failed to load cottages');
+    }
+  }
 }

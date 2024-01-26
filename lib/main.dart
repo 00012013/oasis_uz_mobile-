@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/carousel/carousel_slider_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/cottage/cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/navigation/navigation_bloc.dart';
+import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
 import 'package:oasis_uz_mobile/screens/favourites_dart.dart';
 import 'package:oasis_uz_mobile/screens/home_screen.dart';
 import 'package:oasis_uz_mobile/screens/search_screen.dart';
@@ -13,6 +11,8 @@ import 'package:oasis_uz_mobile/widgets/app_bar.dart';
 import 'package:oasis_uz_mobile/widgets/custom_bottom_nav_bar.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
+        BlocProvider(
+            create: (context) => PopularCottagesBlocBloc(CottageRepository())),
       ],
       child: BlocBuilder<NavigationBloc, NavigationState>(
         builder: (context, state) {

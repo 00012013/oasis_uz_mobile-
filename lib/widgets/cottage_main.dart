@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
+import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
 import 'package:oasis_uz_mobile/widgets/custom_image.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
@@ -27,12 +30,29 @@ class CottageWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FractionallySizedBox(
-            widthFactor: 1,
-            child: SizedBox(
-              height: screenHeight * 0.18,
-              child: CustomImage(cottage.mainAttachment!.id.toString(), 10),
-            ),
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              FractionallySizedBox(
+                widthFactor: 1,
+                child: SizedBox(
+                  height: screenHeight * 0.18,
+                  child: CustomImage(cottage.mainAttachment!.id.toString(), 10),
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  cottage.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border_rounded,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  BlocProvider.of<PopularCottagesBlocBloc>(context)
+                      .add(ToggleFavoriteEvent(cottage.id!));
+                },
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(10),
@@ -65,7 +85,7 @@ class CottageWidget extends StatelessWidget {
                 CustomText(
                   text: "${cottage.weekDaysPrice} USD",
                   weight: FontWeight.w500,
-                  color: Colors.deepPurple[800]!,
+                  color: mainColor,
                 ),
               ],
             ),

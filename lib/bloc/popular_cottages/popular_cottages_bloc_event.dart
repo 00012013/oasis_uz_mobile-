@@ -1,7 +1,15 @@
 part of 'popular_cottages_bloc_bloc.dart';
 
-sealed class PopularCottagesBlocEvent {
+abstract class PopularCottagesBlocEvent {
   const PopularCottagesBlocEvent();
 }
 
 class FetchPopularCottageEvent extends PopularCottagesBlocEvent {}
+
+class ToggleFavoriteEvent extends PopularCottagesBlocEvent {
+  final int cottageId;
+
+  const ToggleFavoriteEvent(this.cottageId);
+}
+
+class FetchFavoriteCottageEvent extends PopularCottagesBlocEvent {}
