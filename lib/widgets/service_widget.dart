@@ -12,21 +12,26 @@ class ServicesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: mainColor,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            CustomText(
-              text: name,
-              weight: FontWeight.w500,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: mainColor,
             ),
-          ],
-        ),
+            child: icon,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          CustomText(
+            text: name,
+            size: 14,
+            color: Colors.black,
+          ),
+        ],
       ),
     );
   }

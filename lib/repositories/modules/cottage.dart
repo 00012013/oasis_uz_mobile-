@@ -15,8 +15,9 @@ class Cottage {
   final int? guestCount;
   final int? totalRoomCount;
   final List<String>? equipmentsList;
-  final List<DateTime>? bookedDates;
+  List<DateTime>? bookedDates = [];
   final Attachment? mainAttachment;
+  final List<Attachment>? attachmentsList;
   bool isFavorite;
 
   Cottage({
@@ -32,6 +33,7 @@ class Cottage {
     this.equipmentsList,
     this.bookedDates,
     this.mainAttachment,
+    this.attachmentsList,
     this.isFavorite = false,
   });
 

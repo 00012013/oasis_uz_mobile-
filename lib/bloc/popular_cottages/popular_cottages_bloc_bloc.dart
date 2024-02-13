@@ -72,16 +72,15 @@ class PopularCottagesBlocBloc
 
   List<Cottage> changeFavorite(
       List<Cottage> cottageList, Set<int> favoriteList) {
-    List<Cottage> cottageFinalList = [];
     for (int favorite in favoriteList) {
       for (Cottage cottage in cottageList) {
         if (cottage.id == favorite) {
           cottage.isFavorite = true;
+          break;
         }
-        cottageFinalList.add(cottage);
       }
     }
-    return cottageFinalList;
+    return cottageList;
   }
 
   Future<void> saveFavoriteCottageIds() async {

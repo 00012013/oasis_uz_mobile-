@@ -37,7 +37,8 @@ class CottageWidget extends StatelessWidget {
                 widthFactor: 1,
                 child: SizedBox(
                   height: screenHeight * 0.18,
-                  child: CustomImage(cottage.mainAttachment!.id.toString(), 10),
+                  child: CustomImage(
+                      cottage.mainAttachment!.id.toString(), 10, false),
                 ),
               ),
               IconButton(
@@ -89,7 +90,7 @@ class CottageWidget extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

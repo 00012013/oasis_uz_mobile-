@@ -7,12 +7,13 @@ BottomNavigationBarItem customBottomNavItem(IconData icon, String label) {
       icon,
       color: mainColor,
       size: 27,
-      weight: 1000.0,
     ),
     label: label,
+    tooltip: label,
     icon: Icon(
       icon,
       color: Colors.black,
+      size: 27,
     ),
   );
 }

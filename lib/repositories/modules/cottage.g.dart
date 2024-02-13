@@ -25,6 +25,10 @@ Cottage _$CottageFromJson(Map<String, dynamic> json) => Cottage(
       mainAttachment: json['mainAttachment'] == null
           ? null
           : Attachment.fromJson(json['mainAttachment'] as Map<String, dynamic>),
+      attachmentsList: (json['attachmentsList'] as List<dynamic>?)
+          ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      isFavorite: json['isFavorite'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
@@ -41,4 +45,7 @@ Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
       'bookedDates':
           instance.bookedDates?.map((e) => e.toIso8601String()).toList(),
       'mainAttachment': instance.mainAttachment?.toJson(),
+      'attachmentsList':
+          instance.attachmentsList?.map((e) => e.toJson()).toList(),
+      'isFavorite': instance.isFavorite,
     };
