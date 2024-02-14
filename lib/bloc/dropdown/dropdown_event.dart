@@ -12,3 +12,8 @@ class SelectOptionEvent extends DropdownEvent {
 
   const SelectOptionEvent(this.selectedOption);
 }
+
+class RefreshEvent extends DropdownEvent {
+  final String selectedOption;
+  const RefreshEvent(this.selectedOption);
+}

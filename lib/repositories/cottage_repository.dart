@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
+import 'package:oasis_uz_mobile/repositories/dto/filter_dto.dart';
 import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,6 +62,20 @@ class CottageRepository {
       },
     );
 
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+
+      final List<Cottage> cottages =
+          jsonList.map((json) => Cottage.fromJson(json)).toList();
+
+      return cottages;
+    } else {
+      throw Exception('Failed to load cottages');
+    }
+  }
+
+  Future<List<Cottage>> fetchFilteredCottages(FilterDto dto) async {
+    final response = await http.get(Uri.parse('$api/api/cottage/get-banner'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
 

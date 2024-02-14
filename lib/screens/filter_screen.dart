@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/dropdown/dropdown_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/equipment/equipment_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/filter/filter_bloc.dart';
+import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/price_range/price_range_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
+import 'package:oasis_uz_mobile/repositories/dto/filter_dto.dart';
 import 'package:oasis_uz_mobile/widgets/custom_slider.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
+import 'package:oasis_uz_mobile/widgets/drop_down_widget.dart';
 import 'package:oasis_uz_mobile/widgets/filter_options_widget.dart';
 
 class FilterScreen extends StatelessWidget {
@@ -29,181 +32,144 @@ class FilterScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => FilterBloc(),
-            ),
-            BlocProvider(
-              create: (context) => PriceRangeBloc(),
-            ),
-            BlocProvider(
-              create: (context) => EquipmentBloc(),
-            ),
-            BlocProvider(
-              create: (context) => DropdownBloc(),
-            )
-          ],
-          child: Align(
-            alignment: Alignment.center,
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomText(
-                    text: 'Sorting types',
-                    weight: FontWeight.w600,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  BlocBuilder<FilterBloc, FilterState>(
-                    builder: (context, state) {
+        child: Align(
+          alignment: Alignment.center,
+          child: FractionallySizedBox(
+            widthFactor: 0.9,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                const CustomText(
+                  text: 'Sorting types',
+                  weight: FontWeight.w600,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                BlocBuilder<FilterBloc, FilterState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FilterOptionWidget(
+                              label: 'Latest',
+                              isSelected: state is FilterByLatestSelected,
+                              onTap: () {
+                                BlocProvider.of<FilterBloc>(context).add(
+                                  const FilterTypeSelected(
+                                    FilterTypeOption.latest,
+                                  ),
+                                );
+                              },
+                            ),
+                            FilterOptionWidget(
+                              label: 'Cheapest',
+                              isSelected: state is FilterByCheapestSelected,
+                              onTap: () {
+                                BlocProvider.of<FilterBloc>(context).add(
+                                  const FilterTypeSelected(
+                                    FilterTypeOption.cheapest,
+                                  ),
+                                );
+                              },
+                            ),
+                            FilterOptionWidget(
+                              label: 'Most Expensive',
+                              isSelected:
+                                  state is FilterByMostExpensiveSelected,
+                              onTap: () {
+                                BlocProvider.of<FilterBloc>(context).add(
+                                  const FilterTypeSelected(
+                                    FilterTypeOption.mostExpensive,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const CustomText(
+                  text: 'Popular places',
+                  weight: FontWeight.w600,
+                ),
+                const SizedBox(height: 15),
+                BlocBuilder<DropdownBloc, DropdownState>(
+                  builder: (context, dropdownState) {
+                    return DropDownWidget(
+                      dropdownState.selectedOption,
+                      dropdownState.options,
+                      (value) {
+                        BlocProvider.of<DropdownBloc>(context).add(
+                          dropdownState is RefreshState
+                              ? SelectOptionEvent(value)
+                              : RefreshEvent(value),
+                        );
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                const CustomText(
+                  text: 'Price Range',
+                  weight: FontWeight.w600,
+                ),
+                const SizedBox(height: 10),
+                BlocBuilder<PriceRangeBloc, PriceRangeState>(
+                  builder: (context, state) {
+                    if (state is PriceRangeFiltered) {
                       return Column(
                         children: [
+                          CustomSliderTheme(
+                            child: RangeSlider(
+                              values:
+                                  RangeValues(state.minPrice, state.maxPrice),
+                              min: 0,
+                              max: 10000000,
+                              divisions: 10,
+                              onChanged: (RangeValues values) {
+                                BlocProvider.of<PriceRangeBloc>(context).add(
+                                  PriceRangeUpdated(values.start, values.end),
+                                );
+                              },
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              FilterOptionWidget(
-                                label: 'Latest',
-                                isSelected: state is FilterByLatestSelected,
-                                onTap: () {
-                                  BlocProvider.of<FilterBloc>(context).add(
-                                    const FilterTypeSelected(
-                                      FilterTypeOption.latest,
-                                    ),
-                                  );
-                                },
+                              Text(
+                                _formatNumberWithSpaces(state.minPrice),
                               ),
-                              FilterOptionWidget(
-                                label: 'Cheapest',
-                                isSelected: state is FilterByCheapestSelected,
-                                onTap: () {
-                                  BlocProvider.of<FilterBloc>(context).add(
-                                    const FilterTypeSelected(
-                                      FilterTypeOption.cheapest,
-                                    ),
-                                  );
-                                },
-                              ),
-                              FilterOptionWidget(
-                                label: 'Most Expensive',
-                                isSelected:
-                                    state is FilterByMostExpensiveSelected,
-                                onTap: () {
-                                  BlocProvider.of<FilterBloc>(context).add(
-                                    const FilterTypeSelected(
-                                      FilterTypeOption.mostExpensive,
-                                    ),
-                                  );
-                                },
+                              Text(
+                                _formatNumberWithSpaces(state.maxPrice),
                               ),
                             ],
                           ),
                         ],
                       );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CustomText(
-                    text: 'Popular places',
-                    weight: FontWeight.w600,
-                  ),
-                  const SizedBox(height: 15),
-                  BlocBuilder<DropdownBloc, DropdownState>(
-                    builder: (context, state) {
-                      if (state is OptionSelectedState) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.grey[400]!,
-                            ),
-                          ),
-                          child: DropdownButton<String>(
-                            key: UniqueKey(),
-                            underline: const SizedBox(),
-                            isExpanded: true,
-                            value: state.selectedOption,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(12)),
-                            hint: const Text('Select an option'),
-                            onChanged: (String? newValue) {
-                              BlocProvider.of<DropdownBloc>(context)
-                                  .add(SelectOptionEvent(newValue!));
-                            },
-                            items: ['', 'Option 1', 'Option 2', 'Option 3']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  const CustomText(
-                    text: 'Price Range',
-                    weight: FontWeight.w600,
-                  ),
-                  const SizedBox(height: 10),
-                  BlocBuilder<PriceRangeBloc, PriceRangeState>(
-                    builder: (context, state) {
-                      if (state is PriceRangeFiltered) {
-                        return Column(
-                          children: [
-                            CustomSliderTheme(
-                              child: RangeSlider(
-                                values:
-                                    RangeValues(state.minPrice, state.maxPrice),
-                                min: 0,
-                                max: 10000000,
-                                divisions: 10,
-                                onChanged: (RangeValues values) {
-                                  BlocProvider.of<PriceRangeBloc>(context).add(
-                                    PriceRangeUpdated(values.start, values.end),
-                                  );
-                                },
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _formatNumberWithSpaces(state.minPrice),
-                                ),
-                                Text(
-                                  _formatNumberWithSpaces(state.maxPrice),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  const CustomText(
-                    text: 'Additional FIlters',
-                    weight: FontWeight.w600,
-                  ),
-                  const SizedBox(height: 15),
-                  BlocBuilder<EquipmentBloc, EquipmentState>(
-                      builder: (context, state) {
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
+                const SizedBox(height: 15),
+                const CustomText(
+                  text: 'Additional FIlters',
+                  weight: FontWeight.w600,
+                ),
+                const SizedBox(height: 15),
+                BlocBuilder<EquipmentBloc, EquipmentState>(
+                  builder: (context, state) {
                     if (state is EquipmentLoaded) {
                       return ListView.builder(
                         shrinkWrap: true,
@@ -231,13 +197,77 @@ class FilterScreen extends StatelessWidget {
                     } else {
                       return Container();
                     }
-                  }),
-                ],
-              ),
+                  },
+                ),
+              ],
             ),
           ),
         ),
       ),
+      floatingActionButton: Container(
+        height: 50,
+        color: Colors.white,
+        padding: EdgeInsets.only(
+            bottom: 10,
+            left: MediaQuery.sizeOf(context).width * 0.05,
+            right: MediaQuery.sizeOf(context).width * 0.05),
+        width: MediaQuery.sizeOf(context).width * 1,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(mainColor),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+          ),
+          onPressed: () {
+            FilterTypeOption? filterByType;
+            final filterBlocState = BlocProvider.of<FilterBloc>(context).state;
+            if (filterBlocState is FilterByCheapestSelected) {
+              filterByType = FilterTypeOption.cheapest;
+            } else if (filterBlocState is FilterByLatestSelected) {
+              filterByType = FilterTypeOption.latest;
+            } else if (filterBlocState is FilterByMostExpensiveSelected) {
+              filterByType = FilterTypeOption.mostExpensive;
+            }
+
+            final dropDownState = BlocProvider.of<DropdownBloc>(context).state;
+            final selectedOption = dropDownState.selectedOption;
+
+            final priceRangeState =
+                BlocProvider.of<PriceRangeBloc>(context).state;
+            double? maxPrice;
+            double? minPrice;
+            if (priceRangeState is PriceRangeFiltered) {
+              maxPrice = priceRangeState.maxPrice;
+              minPrice = priceRangeState.minPrice;
+            }
+
+            final equipmentState =
+                BlocProvider.of<EquipmentBloc>(context).state;
+            List<String>? equipmentList = [];
+            if (equipmentState is EquipmentLoaded) {
+              equipmentList = equipmentState.items
+                  .where((item) => item.isChecked)
+                  .map((e) => e.name)
+                  .toList();
+            }
+
+            FilterDto filterDto = FilterDto(
+                filterByType?.toString().split('.').last,
+                selectedOption,
+                minPrice,
+                maxPrice,
+                equipmentList);
+            BlocProvider.of<FilterCottageBloc>(context)
+                .add(FilterCottage(filterDto));
+            Navigator.of(context).pop();
+          },
+          child: const CustomText(
+            text: 'Apply changes',
+            size: 16,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

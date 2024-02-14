@@ -16,7 +16,7 @@ class EquipmentBloc extends Bloc<EquipmentEvent, EquipmentState> {
             Equipment(name: 'Billiard', isChecked: false),
           ],
         )) {
-    on<ToggleItemEvent>((event, emit) async {
+    on<ToggleItemEvent>((event, emit) {
       List<Equipment> updatedItems = [];
       for (var equipment in [...(state as EquipmentLoaded).items]) {
         if (equipment.name == event.itemName) {

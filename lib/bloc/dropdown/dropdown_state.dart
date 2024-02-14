@@ -1,14 +1,15 @@
 part of 'dropdown_bloc.dart';
 
-sealed class DropdownState extends Equatable {
-  const DropdownState();
+class DropdownState extends Equatable {
+  final String selectedOption;
+  final List<String> options;
+
+  const DropdownState(this.selectedOption, this.options);
 
   @override
   List<Object> get props => [];
 }
 
-class OptionSelectedState extends DropdownState {
-  final String selectedOption;
-
-  const OptionSelectedState(this.selectedOption);
+class RefreshState extends DropdownState {
+  const RefreshState(super.selectedOption, super.options);
 }
