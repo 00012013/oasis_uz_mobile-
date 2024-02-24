@@ -9,7 +9,19 @@ sealed class FilterCottageState extends Equatable {
 
 final class FilterCottageInitial extends FilterCottageState {}
 
+final class FilterCottageLoading extends FilterCottageState {}
+
 final class FilterCottageLoaded extends FilterCottageState {
-  List<Cottage> cottage;
-  FilterCottageLoaded(this.cottage);
+  final List<Cottage> cottage;
+  const FilterCottageLoaded(this.cottage);
+
+  @override
+  List<Object> get props => [cottage];
+  FilterCottageLoaded copyWith({
+    List<Cottage>? newCottage,
+  }) {
+    return FilterCottageLoaded(
+      newCottage ?? this.cottage,
+    );
+  }
 }

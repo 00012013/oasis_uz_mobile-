@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
-import 'package:oasis_uz_mobile/repositories/dto/filter_dto.dart';
+import 'package:oasis_uz_mobile/repositories/modules/filter.dart';
 import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
 import 'package:http/http.dart' as http;
 
@@ -74,8 +74,11 @@ class CottageRepository {
     }
   }
 
-  Future<List<Cottage>> fetchFilteredCottages(FilterDto dto) async {
-    final response = await http.get(Uri.parse('$api/api/cottage/get-banner'));
+  Future<List<Cottage>> fetchFilteredCottages(Filter dto) async {
+    var body = dto.toJson();
+    final response = await http.post(headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    }, body: jsonEncode(body), Uri.parse('$api/api/cottage/filter'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
 

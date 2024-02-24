@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/dropdown/dropdown_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/equipment/equipment_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/filter/filter_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/price_range/price_range_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/dto/filter_dto.dart';
+import 'package:oasis_uz_mobile/repositories/modules/filter.dart';
 import 'package:oasis_uz_mobile/widgets/custom_slider.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/drop_down_widget.dart';
@@ -246,19 +245,14 @@ class FilterScreen extends StatelessWidget {
             if (equipmentState is EquipmentLoaded) {
               equipmentList = equipmentState.items
                   .where((item) => item.isChecked)
-                  .map((e) => e.name)
+                  .map((e) => e.name.toUpperCase())
                   .toList();
             }
 
-            FilterDto filterDto = FilterDto(
-                filterByType?.toString().split('.').last,
-                selectedOption,
-                minPrice,
-                maxPrice,
-                equipmentList);
-            BlocProvider.of<FilterCottageBloc>(context)
-                .add(FilterCottage(filterDto));
-            Navigator.of(context).pop();
+            Filter filterDto = Filter(filterByType?.toString().split('.').last,
+                selectedOption, minPrice, maxPrice, equipmentList);
+
+            Navigator.of(context).pop(filterDto);
           },
           child: const CustomText(
             text: 'Apply changes',

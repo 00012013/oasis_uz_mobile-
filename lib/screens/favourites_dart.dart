@@ -4,6 +4,7 @@ import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
+import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -14,19 +15,7 @@ class FavoritesScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Card(
-              elevation: 1,
-              color: Colors.white,
-              child: Center(
-                heightFactor: 3,
-                child: CustomText(
-                  text: 'Wishlist',
-                  size: 20,
-                  weight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+            const AppHeader("Wishlist"),
             BlocBuilder<PopularCottagesBlocBloc, PopularCottagesBlocState>(
               builder: (context, state) {
                 if (state is PopularCottagesLoaded) {

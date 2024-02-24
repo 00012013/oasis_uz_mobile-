@@ -15,7 +15,8 @@ import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/service_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+  final CottageRepository cottageRepository = CottageRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,6 @@ class HomeScreen extends StatelessWidget {
         "page": ""
       },
     ];
-    final CottageRepository cottageRepository = CottageRepository();
     return SafeArea(
       child: SingleChildScrollView(
         child: MultiBlocProvider(

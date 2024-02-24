@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
 import 'package:oasis_uz_mobile/widgets/custom_image.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 
-class CottageWidget extends StatelessWidget {
+class CottageWidget extends StatefulWidget {
   final Cottage cottage;
 
   const CottageWidget(this.cottage, {super.key});
 
+  @override
+  State<CottageWidget> createState() => _CottageWidgetState();
+}
+
+class _CottageWidgetState extends State<CottageWidget> {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -37,20 +43,28 @@ class CottageWidget extends StatelessWidget {
                 widthFactor: 1,
                 child: SizedBox(
                   height: screenHeight * 0.18,
-                  child: CustomImage(
-                      cottage.mainAttachment!.id.toString(), 10, false),
+                  child: widget.cottage.mainAttachment != null
+                      ? CustomImage(
+                          widget.cottage.mainAttachment!.id.toString(),
+                          10,
+                          false)
+                      : null,
                 ),
               ),
               IconButton(
                 icon: Icon(
-                  cottage.isFavorite
+                  widget.cottage.isFavorite
                       ? Icons.favorite
                       : Icons.favorite_border_rounded,
                   color: Colors.red,
                 ),
                 onPressed: () {
-                  BlocProvider.of<PopularCottagesBlocBloc>(context)
-                      .add(ToggleFavoriteEvent(cottage.id!));
+                  setState(() {
+                    BlocProvider.of<PopularCottagesBlocBloc>(context)
+                        .add(ToggleFavoriteEvent(widget.cottage.id!));
+                    BlocProvider.of<FilterCottageBloc>(context)
+                        .add(const FilterCottage(null));
+                  });
                 },
               ),
             ],
@@ -62,7 +76,7 @@ class CottageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: cottage.name,
+                  text: widget.cottage.name,
                   size: 18,
                   color: Colors.black,
                   weight: FontWeight.w500,
@@ -84,7 +98,7 @@ class CottageWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 CustomText(
-                  text: "${cottage.weekDaysPrice} USD",
+                  text: "${widget.cottage.weekDaysPrice} USD",
                   weight: FontWeight.w500,
                   color: mainColor,
                 ),
