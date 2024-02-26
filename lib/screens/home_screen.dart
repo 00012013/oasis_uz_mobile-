@@ -9,6 +9,7 @@ import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 import 'package:oasis_uz_mobile/screens/cottage_screen.dart';
+import 'package:oasis_uz_mobile/screens/wishlist_screen.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_banner_images.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
@@ -67,15 +68,34 @@ class HomeScreen extends StatelessWidget {
                 Card(
                   elevation: 1,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset("assets/images/logo2.jpg"),
+                      Row(
+                        children: [
+                          SizedBox(
+                            height: 60,
+                            width: 60,
+                            child: Image.asset("assets/images/logo2.jpg"),
+                          ),
+                          const Text(
+                            'OASIS Uz',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
                       ),
-                      const Text(
-                        'OASIS Uz',
-                        style: TextStyle(color: Colors.black),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: context.read<PopularCottagesBlocBloc>(),
+                                child: const WishlistScreen(),
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.favorite),
                       ),
                     ],
                   ),

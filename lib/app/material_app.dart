@@ -1,8 +1,11 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
+import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/constants/language_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -47,12 +50,15 @@ class _MyAppState extends State<MyApp> {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    return MaterialApp(
-      locale: _locale,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const AppMain(),
+    return BlocProvider(
+      create: (context) => PopularCottagesBlocBloc(CottageRepository()),
+      child: MaterialApp(
+        locale: _locale,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const AppMain(),
+      ),
     );
   }
 }

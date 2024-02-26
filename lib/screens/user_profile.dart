@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oasis_uz_mobile/screens/feedback_screen.dart';
 import 'package:oasis_uz_mobile/screens/language_screen.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
 
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -81,7 +87,10 @@ class UserProfile extends StatelessWidget {
                       Icons.arrow_forward_ios_rounded,
                       size: 20,
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const FeedbackScreen()));
+                    },
                   ),
                   ListTile(
                     title: CustomText(

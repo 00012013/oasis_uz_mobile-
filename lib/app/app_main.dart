@@ -3,9 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/navigation/navigation_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
-import 'package:oasis_uz_mobile/screens/favourites_dart.dart';
 import 'package:oasis_uz_mobile/screens/home_screen.dart';
 import 'package:oasis_uz_mobile/screens/search_screen.dart';
 import 'package:oasis_uz_mobile/screens/user_profile.dart';
@@ -25,8 +23,6 @@ class _AppMainState extends State<AppMain> {
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
         BlocProvider(
-            create: (context) => PopularCottagesBlocBloc(CottageRepository())),
-        BlocProvider(
             create: (context) => FilterCottageBloc(CottageRepository())),
       ],
       child: BlocBuilder<NavigationBloc, NavigationState>(
@@ -39,7 +35,7 @@ class _AppMainState extends State<AppMain> {
                 children: [
                   HomeScreen(),
                   const SearchScreen(),
-                  const FavoritesScreen(),
+                  // const FavoritesScreen(),
                   const UserProfile(),
                 ],
               ),
@@ -54,7 +50,7 @@ class _AppMainState extends State<AppMain> {
                 items: [
                   customBottomNavItem(Icons.home_outlined, ''),
                   customBottomNavItem(Icons.search, ''),
-                  customBottomNavItem(Icons.favorite_border, ''),
+                  // customBottomNavItem(Icons.favorite_border, ''),
                   customBottomNavItem(Icons.person_2_outlined, '')
                 ],
               ),

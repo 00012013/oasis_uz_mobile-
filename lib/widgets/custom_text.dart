@@ -6,6 +6,7 @@ class CustomText extends StatelessWidget {
   final Color color;
   final FontWeight weight;
   final int maxLines;
+  final TextAlign textAlign;
 
   const CustomText({
     super.key,
@@ -14,6 +15,7 @@ class CustomText extends StatelessWidget {
     this.color = Colors.black,
     this.weight = FontWeight.normal,
     this.maxLines = 1,
+    this.textAlign = TextAlign.start,
   });
 
   @override
@@ -21,7 +23,12 @@ class CustomText extends StatelessWidget {
     return Text(
       maxLines: maxLines,
       text ?? '',
-      style: TextStyle(fontSize: size, color: color, fontWeight: weight),
+      style: TextStyle(
+        fontSize: size,
+        color: color,
+        fontWeight: weight,
+      ),
+      textAlign: textAlign,
     );
   }
 }

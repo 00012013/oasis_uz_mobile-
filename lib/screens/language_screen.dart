@@ -57,7 +57,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             const SizedBox(
               height: 150,
             ),
-            Icon(
+            const Icon(
               Icons.language_sharp,
               size: 100,
               color: tealColor,
@@ -75,21 +75,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
             ),
             InkWell(
               onTap: () {
-                MyApp.setLocale(context, const Locale('en'));
-                selectedLanguage = ENGLISH;
+                MyApp.setLocale(context, const Locale('uz'));
+                selectedLanguage = UZBEK;
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.4,
                 decoration: BoxDecoration(
-                  color: selectedLanguage == ENGLISH ? tealColor : null,
+                  color: selectedLanguage == UZBEK ? tealColor : null,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: CustomText(
-                  text: '🇺🇸   English',
+                  text: '🇺🇿  O\'zbek',
                   size: 22,
                   color:
-                      selectedLanguage != ENGLISH ? Colors.black : Colors.white,
+                      selectedLanguage != UZBEK ? Colors.black : Colors.white,
                 ),
               ),
             ),
@@ -115,21 +115,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
             ),
             InkWell(
               onTap: () {
-                MyApp.setLocale(context, const Locale('uz'));
-                selectedLanguage = UZBEK;
+                MyApp.setLocale(context, const Locale('en'));
+                selectedLanguage = ENGLISH;
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.4,
                 decoration: BoxDecoration(
-                  color: selectedLanguage == UZBEK ? tealColor : null,
+                  color: selectedLanguage == ENGLISH ? tealColor : null,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: CustomText(
-                  text: '🇺🇿  O\'zbek',
+                  text: '🇺🇸   English',
                   size: 22,
                   color:
-                      selectedLanguage != UZBEK ? Colors.black : Colors.white,
+                      selectedLanguage != ENGLISH ? Colors.black : Colors.white,
                 ),
               ),
             ),
