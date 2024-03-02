@@ -15,16 +15,12 @@ import 'package:oasis_uz_mobile/screens/cottage_screen.dart';
 import 'package:oasis_uz_mobile/screens/filter_screen.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class SearchScreen extends StatelessWidget {
+  SearchScreen({super.key});
 
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
   final CottageRepository cottageRepository = CottageRepository();
 
   @override
@@ -41,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppHeader("Search"),
+              AppHeader(AppLocalizations.of(context)!.search),
               const SizedBox(height: 10),
               BlocBuilder<FilterCottageBloc, FilterCottageState>(
                 builder: (context, state) {
@@ -78,8 +74,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                             }
                                           },
                                           cursorColor: mainColor,
-                                          decoration: const InputDecoration(
-                                            hintText: 'Search...',
+                                          decoration: InputDecoration(
+                                            hintText:
+                                                '${AppLocalizations.of(context)!.search}...',
                                             border: InputBorder.none,
                                           ),
                                         ),
@@ -94,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               flex: 1,
                               child: GestureDetector(
                                 onTap: () async {
-                                  Filter filterDto =
+                                  Filter? filterDto =
                                       await Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => MultiBlocProvider(

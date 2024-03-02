@@ -14,6 +14,7 @@ import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_banner_images.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/service_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List serviceList = [
       {
-        "name": "Dacha",
+        "name": AppLocalizations.of(context)!.dacha,
         "icon": const Icon(
           Icons.house_outlined,
           color: Colors.white,
@@ -32,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         "page": ""
       },
       {
-        "name": "Karaoke",
+        "name": AppLocalizations.of(context)!.karaoke,
         "icon": const Icon(
           Icons.mic_external_on,
           color: Colors.white,
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
         "page": ""
       },
       {
-        "name": "PlayStation",
+        "name": AppLocalizations.of(context)!.playStation,
         "icon": const Icon(
           Icons.gamepad_outlined,
           color: Colors.white,
@@ -65,39 +66,49 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.center,
             child: Column(
               children: [
-                Card(
-                  elevation: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                FractionallySizedBox(
+                  widthFactor: 1,
+                  child: Card(
+                    elevation: 1,
+                    child: FractionallySizedBox(
+                      widthFactor: 0.95,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset("assets/images/logo2.jpg"),
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 60,
+                                width: 60,
+                                child: Image.asset("assets/images/logo2.jpg"),
+                              ),
+                              const Text(
+                                'OASIS Uz',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            'OASIS Uz',
-                            style: TextStyle(color: Colors.black),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value:
+                                        context.read<PopularCottagesBlocBloc>(),
+                                    child: const WishlistScreen(),
+                                  ),
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.favorite,
+                              color: mainColor,
+                            ),
                           ),
                         ],
                       ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: context.read<PopularCottagesBlocBloc>(),
-                                child: const WishlistScreen(),
-                              ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.favorite),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 Align(
@@ -207,8 +218,8 @@ class HomeScreen extends StatelessWidget {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           padding: const EdgeInsets.all(15),
-                          child: const CustomText(
-                            text: 'Popular',
+                          child: CustomText(
+                            text: AppLocalizations.of(context)!.popular,
                             color: Colors.white,
                           ),
                         ),

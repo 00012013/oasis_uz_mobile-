@@ -1,10 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
+import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
+import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/constants/language_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 
 class MyApp extends StatefulWidget {
@@ -50,8 +53,17 @@ class _MyAppState extends State<MyApp> {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    return BlocProvider(
-      create: (context) => PopularCottagesBlocBloc(CottageRepository()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PopularCottagesBlocBloc(CottageRepository()),
+        ),
+        BlocProvider(
+          create: (context) => AuthenticationCubit(AuthenticationRepository()),
+        ),
+        BlocProvider(
+            create: (context) => FilterCottageBloc(CottageRepository())),
+      ],
       child: MaterialApp(
         locale: _locale,
         debugShowCheckedModeBanner: false,

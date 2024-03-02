@@ -10,6 +10,7 @@ import 'package:oasis_uz_mobile/widgets/custom_slider.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/drop_down_widget.dart';
 import 'package:oasis_uz_mobile/widgets/filter_options_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilterScreen extends StatelessWidget {
   const FilterScreen({Key? key}) : super(key: key);
@@ -18,8 +19,8 @@ class FilterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          text: "Filter",
+        title: CustomText(
+          text: AppLocalizations.of(context)!.filter,
           color: Colors.black,
           size: 18,
           weight: FontWeight.bold,

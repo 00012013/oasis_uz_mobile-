@@ -4,6 +4,7 @@ import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -12,8 +13,8 @@ class WishlistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          text: "Wishlist",
+        title: CustomText(
+          text: AppLocalizations.of(context)!.wishlist,
           color: Colors.black,
           size: 18,
           weight: FontWeight.bold,

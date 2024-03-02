@@ -59,9 +59,9 @@ class _CottageWidgetState extends State<CottageWidget> {
                   color: Colors.red,
                 ),
                 onPressed: () {
+                  BlocProvider.of<PopularCottagesBlocBloc>(context)
+                      .add(ToggleFavoriteEvent(widget.cottage.id!));
                   setState(() {
-                    BlocProvider.of<PopularCottagesBlocBloc>(context)
-                        .add(ToggleFavoriteEvent(widget.cottage.id!));
                     BlocProvider.of<FilterCottageBloc>(context)
                         .add(const FilterCottage(null));
                   });

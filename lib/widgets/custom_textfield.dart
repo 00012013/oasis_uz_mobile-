@@ -11,19 +11,25 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool obscureText;
   final bool isPhone;
+  final Widget? leadingButton;
+  final Widget? trailingButton;
+  final VoidCallback? onTrailingButtonPressed;
 
-  const CustomTextField({
-    Key? key,
-    required this.controller,
-    required this.labelText,
-    this.maxLines = 1,
-    this.fontSize = 14,
-    this.validator,
-    this.initialValue,
-    this.focusNode,
-    this.obscureText = false,
-    this.isPhone = false,
-  }) : super(key: key);
+  const CustomTextField(
+      {Key? key,
+      required this.controller,
+      required this.labelText,
+      this.maxLines = 1,
+      this.fontSize = 14,
+      this.validator,
+      this.initialValue,
+      this.focusNode,
+      this.obscureText = false,
+      this.isPhone = false,
+      this.leadingButton,
+      this.trailingButton,
+      this.onTrailingButtonPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +45,22 @@ class CustomTextField extends StatelessWidget {
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
+        prefixIcon: leadingButton != null
+            ? IconButton(
+                icon: leadingButton!,
+                onPressed: () {},
+              )
+            : null,
+        suffixIcon: trailingButton != null
+            ? IconButton(
+                icon: trailingButton!,
+                onPressed: onTrailingButtonPressed,
+              )
+            : null,
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: const BorderSide(color: tealColor)),
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: const BorderSide(color: tealColor),
+        ),
       ),
       validator: validator,
       initialValue: initialValue,

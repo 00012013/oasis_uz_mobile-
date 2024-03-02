@@ -8,5 +8,14 @@
     "feedback":"Feedback",
     "aboutProgram":"About the program",
     "follow":"Follow us on social media and stay tuned",
-    "selectLanguage":"Select language!"
+    "selectLanguage":"Select language!",
+    "dacha":"Cottoge",    
+    "karaoke":"Karaoke",    
+    "playStation":"Play Station",    
+    "popular":"Recomended",    
+    "search":"Search",    
+    "myCottages":"Advertisments",    
+    "messages":"Messages",    
+    "filter":"Filter",
+    "wishlist":"Wishlist"
 }   

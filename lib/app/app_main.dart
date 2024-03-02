@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/navigation/navigation_bloc.dart';
-import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 import 'package:oasis_uz_mobile/screens/home_screen.dart';
+import 'package:oasis_uz_mobile/screens/message_screen.dart';
+import 'package:oasis_uz_mobile/screens/my_cottages_screen.dart';
 import 'package:oasis_uz_mobile/screens/search_screen.dart';
 import 'package:oasis_uz_mobile/screens/user_profile.dart';
 import 'package:oasis_uz_mobile/widgets/custom_bottom_nav_bar.dart';
@@ -22,8 +21,6 @@ class _AppMainState extends State<AppMain> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
-        BlocProvider(
-            create: (context) => FilterCottageBloc(CottageRepository())),
       ],
       child: BlocBuilder<NavigationBloc, NavigationState>(
         builder: (context, state) {
@@ -34,8 +31,9 @@ class _AppMainState extends State<AppMain> {
                 index: state.tabIndex,
                 children: [
                   HomeScreen(),
-                  const SearchScreen(),
-                  // const FavoritesScreen(),
+                  SearchScreen(),
+                  MyCottagesScreen(),
+                  const MessageScreen(),
                   const UserProfile(),
                 ],
               ),
@@ -50,7 +48,8 @@ class _AppMainState extends State<AppMain> {
                 items: [
                   customBottomNavItem(Icons.home_outlined, ''),
                   customBottomNavItem(Icons.search, ''),
-                  // customBottomNavItem(Icons.favorite_border, ''),
+                  customBottomNavItem(Icons.add_circle_outline_rounded, ''),
+                  customBottomNavItem(Icons.message_rounded, ''),
                   customBottomNavItem(Icons.person_2_outlined, '')
                 ],
               ),

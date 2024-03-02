@@ -8,6 +8,15 @@
     "feedback": "Обратная связь",
     "aboutProgram": "О программе",
     "follow": "Следите за нами в социальных сетях и следите за обновлениями",
-    "selectLanguage":"Выберите язык!"
-    
+    "selectLanguage":"Выберите язык!",
+    "dacha":"Дача",    
+    "karaoke":"Караоке",    
+    "playStation":"Play Station",    
+    "popular":"Рекомендуемые",    
+    "search":"Поиск",    
+    "myCottages":"Объявления",    
+    "messages":"Сообщения",    
+    "filter":"Фильтры",
+    "wishlist":"Избранные"
+
 }

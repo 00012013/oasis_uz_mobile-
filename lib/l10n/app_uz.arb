@@ -8,5 +8,14 @@
     "feedback": "Fikr mulohaza",
     "aboutProgram": "Dastur haqida",
     "follow": "Bizni ijtimoiy tarmoqlarda kuzatib boring",
-    "selectLanguage":"Tilni tanlang!"
+    "selectLanguage": "Tilni tanlang!",
+    "dacha": "Dacha",
+    "karaoke": "Karaoke",
+    "playStation": "Play Station",
+    "popular": "Tavsiyalar",
+    "search": "Qidirish",
+    "myCottages": "Mening e'lonlarlarim",
+    "messages": "Xabarlar",
+    "filter": "Filtrlar",
+    "wishlist":"Sevimlilar"
 }
