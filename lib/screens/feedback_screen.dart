@@ -6,6 +6,7 @@ import 'package:oasis_uz_mobile/repositories/feedback_repository.dart';
 import 'package:oasis_uz_mobile/widgets/custom_snackbar.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/custom_textfield.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
@@ -33,8 +34,8 @@ class FeedbackScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          text: "Feedback",
+        title: CustomText(
+          text: AppLocalizations.of(context)!.feedback,
           color: Colors.black,
           size: 18,
           weight: FontWeight.bold,
@@ -50,8 +51,8 @@ class FeedbackScreenContent extends StatelessWidget {
             if (state is FeedbackSubmissionSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const CustomText(
-                      text: 'Feedback submitted successfully!',
+                  content: CustomText(
+                      text: AppLocalizations.of(context)!.feedbackSuccess,
                       color: Colors.white),
                   backgroundColor: Colors.green,
                   duration: const Duration(seconds: 3),
@@ -70,12 +71,12 @@ class FeedbackScreenContent extends StatelessWidget {
               );
               CustomSnackBar(backgroundColor: Colors.green).showError(
                 context,
-                'Feedback submitted successfully!',
+                AppLocalizations.of(context)!.feedbackSuccess,
               );
             } else if (state is FeedbackSubmissionError) {
               CustomSnackBar().showError(
                 context,
-                'Error sending the feedback!',
+                AppLocalizations.of(context)!.feedbackFailed,
               );
             }
           },
@@ -88,15 +89,14 @@ class FeedbackScreenContent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
-                      const CustomText(text: 'Full name'),
+                      CustomText(text: AppLocalizations.of(context)!.fullName),
                       const SizedBox(height: 5),
                       CustomTextField(
                         labelText: '',
-                        validator: (p0) {},
                         controller: _fullNameController,
                       ),
                       const SizedBox(height: 20),
-                      const CustomText(text: 'Phone number'),
+                      CustomText(text: AppLocalizations.of(context)!.phone),
                       const SizedBox(height: 5),
                       CustomTextField(
                         labelText: '',
@@ -104,11 +104,11 @@ class FeedbackScreenContent extends StatelessWidget {
                         controller: _phoneController,
                       ),
                       const SizedBox(height: 20),
-                      const CustomText(text: 'Message'),
+                      CustomText(text: AppLocalizations.of(context)!.message),
                       const SizedBox(height: 5),
                       CustomTextField(
                         maxLines: 10,
-                        labelText: 'Enter your feedback here...',
+                        labelText: AppLocalizations.of(context)!.messageText,
                         controller: _messageController,
                       ),
                     ],
@@ -130,8 +130,8 @@ class FeedbackScreenContent extends StatelessWidget {
                   minimumSize: Size(MediaQuery.sizeOf(context).width * 0.5,
                       MediaQuery.sizeOf(context).width * 0.1),
                 ),
-                child: const CustomText(
-                  text: 'Submit',
+                child: CustomText(
+                  text: AppLocalizations.of(context)!.submit,
                   color: Colors.white,
                 ),
               ),

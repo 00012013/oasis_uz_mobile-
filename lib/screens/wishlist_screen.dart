@@ -65,8 +65,8 @@ class WishlistScreen extends StatelessWidget {
                               color: mainColor,
                               size: 40,
                             ),
-                            const CustomText(
-                              text: 'Wish list is empty',
+                            CustomText(
+                              text: AppLocalizations.of(context)!.wishlistEmpty,
                               color: Colors.black,
                               size: 18,
                             )

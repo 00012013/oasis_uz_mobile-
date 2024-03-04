@@ -17,5 +17,16 @@
     "myCottages": "Mening e'lonlarlarim",
     "messages": "Xabarlar",
     "filter": "Filtrlar",
-    "wishlist":"Sevimlilar"
+    "wishlist": "Sevimlilar",
+    "wishlistEmpty": "Istaklar roʻyxati boʻsh",
+    "searchText": "Siz nimani izlayapsiz?",
+    "feedbackSuccess": "Fikr-mulohaza muvaffaqiyatli yuborildi!",
+    "feedbackFailed": "Fikr-mulohaza yuborishda xatolik yuz berdi!",
+    "fullName": "Ism",
+    "email": "email",
+    "password": "parol",
+    "message": "Xabar",
+    "messageText": "Xabarni kiriting...",
+    "phone":"Telefon raqam",
+    "submit":"Jo'natish"
 }

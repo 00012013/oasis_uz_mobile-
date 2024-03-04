@@ -1,34 +1,41 @@
 import 'package:bloc/bloc.dart';
 import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
-import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
+import 'package:oasis_uz_mobile/repositories/modules/user.dart';
 
-class AuthenticationCubit extends Cubit<AuthenticationStatus> {
-  AuthenticationCubit(this._authenticationRepository)
-      : super(AuthenticationStatus.unauthenticated);
+class AuthenticationCubit extends Cubit<User?> {
+  AuthenticationCubit(this._authenticationRepository) : super(null) {
+    initialize();
+  }
 
   final AuthenticationRepository _authenticationRepository;
 
+  Future<void> initialize() async {
+    final User? user = await _authenticationRepository.checkAuth();
+    if (user != null) {
+      emit(user);
+    }
+  }
+
   Future<void> authenticateUser(String username, String password) async {
-    final accessToken =
+    final user =
         await _authenticationRepository.authenticateUser(username, password);
-    if (accessToken != null) {
-      emit(AuthenticationStatus.authenticated);
+    await _authenticationRepository.saveUser(user);
+    if (user != null) {
+      emit(user);
     } else {
-      emit(AuthenticationStatus.unauthenticated);
+      emit(null);
     }
   }
 
   Future<void> checkAuthenticationStatus() async {
     final token = await _authenticationRepository.retrieveToken();
-    if (token != null) {
-      emit(AuthenticationStatus.authenticated);
-    } else {
-      emit(AuthenticationStatus.unauthenticated);
+    if (token == null) {
+      emit(null);
     }
   }
 
   Future<void> logout() async {
     await _authenticationRepository.logout();
-    emit(AuthenticationStatus.unauthenticated);
+    emit(null);
   }
 }

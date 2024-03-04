@@ -5,6 +5,7 @@ import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
@@ -15,7 +16,7 @@ class FavoritesScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const AppHeader("Wishlist"),
+            AppHeader(AppLocalizations.of(context)!.wishlist),
             BlocBuilder<PopularCottagesBlocBloc, PopularCottagesBlocState>(
               builder: (context, state) {
                 if (state is PopularCottagesLoaded) {
@@ -51,8 +52,8 @@ class FavoritesScreen extends StatelessWidget {
                             color: mainColor,
                             size: 40,
                           ),
-                          const CustomText(
-                            text: 'Wish list is empty',
+                          CustomText(
+                            text: AppLocalizations.of(context)!.wishlistEmpty,
                             color: Colors.black,
                             size: 18,
                           )

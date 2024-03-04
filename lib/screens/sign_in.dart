@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
+import 'package:oasis_uz_mobile/repositories/modules/user.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/custom_textfield.dart';
 
@@ -29,9 +29,9 @@ class _SignInScreenState extends State<SignInScreen> {
     );
     var emailController = TextEditingController();
     var passwordController = TextEditingController();
-    return BlocListener<AuthenticationCubit, AuthenticationStatus>(
+    return BlocListener<AuthenticationCubit, User?>(
       listener: (context, state) {
-        if (state == AuthenticationStatus.authenticated) {
+        if (state != null) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const AppMain()),
           );

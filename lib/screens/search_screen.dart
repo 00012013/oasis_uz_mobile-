@@ -176,9 +176,10 @@ class SearchScreen extends StatelessWidget {
                                     height:
                                         MediaQuery.sizeOf(context).height * 0.3,
                                   ),
-                                  const Center(
+                                  Center(
                                     child: CustomText(
-                                        text: 'What are you looking for?',
+                                        text: AppLocalizations.of(context)!
+                                            .searchText,
                                         color: Colors.black),
                                   )
                                 ],

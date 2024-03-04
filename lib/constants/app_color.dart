@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
-final Color mainColor = Colors.deepPurple[400]!;
+final Color mainColor = Colors.blueGrey[700]!;
 
-const Color tealColor = Colors.teal;
+final Color tealColor = Colors.teal[700]!;

@@ -57,7 +57,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             const SizedBox(
               height: 150,
             ),
-            const Icon(
+            Icon(
               Icons.language_sharp,
               size: 100,
               color: tealColor,

@@ -3,6 +3,8 @@ import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyCottagesScreen extends StatelessWidget {
+  const MyCottagesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
