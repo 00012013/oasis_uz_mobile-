@@ -1,24 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oasis_uz_mobile/app/app_main.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/screens/sign_up.dart';
+import 'package:oasis_uz_mobile/repositories/modules/user.dart';
+import 'package:oasis_uz_mobile/screens/sign_in.dart';
 import 'package:oasis_uz_mobile/widgets/custom_snackbar.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/custom_textfield.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   var emailController = TextEditingController();
+  var nameController = TextEditingController();
   var passwordController = TextEditingController();
 
   @override
@@ -29,21 +31,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
     return Scaffold(
       backgroundColor: Colors.brown[50],
-      body: BlocListener<AuthenticationCubit, AuthenticationState?>(
+      body: BlocListener<AuthenticationCubit, AuthenticationState>(
         listener: (context, state) {
-          if (state is AuthenticationFailure) {
-            CustomSnackBar().showError(
-              context,
-              state.error,
-            );
-            authenticationCubit.emitInitial();
+          if (state is RegistrationSuccess) {
+            CustomSnackBar(backgroundColor: Colors.green[800]!)
+                .showError(context, 'User reigstered successfully!');
+            sleep(const Duration(seconds: 3));
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const SignInScreen()),
             );
-          } else if (state is AuthenticationSuccess) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const AppMain()),
-            );
+          } else if (state is RegistrationFailure) {
+            CustomSnackBar().showError(context, state.error);
           }
         },
         child: SingleChildScrollView(
@@ -59,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const Center(
                       child: CustomText(
-                        text: 'Login',
+                        text: 'Sign Up',
                         size: 22,
                         weight: FontWeight.w500,
                       ),
@@ -69,12 +67,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const Center(
                       child: CustomText(
-                        text: 'Hello, welcome back',
+                        text: 'Create an account',
                         size: 20,
                       ),
                     ),
                     const SizedBox(
                       height: 60,
+                    ),
+                    CustomTextField(
+                      labelText: 'Full Name',
+                      controller: nameController,
+                      leadingButton: const Icon(Icons.person),
+                    ),
+                    const SizedBox(
+                      height: 25,
                     ),
                     CustomTextField(
                       labelText: 'Email',
@@ -90,11 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       obscureText: obscureText,
                       leadingButton: const Icon(Icons.lock),
                       trailingButton: const Icon(Icons.remove_red_eye),
-                      onTrailingButtonPressed: () {
-                        setState(() {
-                          obscureText = !obscureText;
-                        });
-                      },
+                      onTrailingButtonPressed: () {},
                     ),
                     const SizedBox(
                       height: 25,
@@ -105,12 +107,18 @@ class _SignInScreenState extends State<SignInScreen> {
 
                         if (emailController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty) {
-                          authenticationCubit.authenticateUser(
-                              emailController.text, passwordController.text);
+                          authenticationCubit.registerUser(
+                            User(
+                              null,
+                              nameController.text,
+                              passwordController.text,
+                              emailController.text,
+                            ),
+                          );
                         }
                       },
                       child: Container(
-                        width: MediaQuery.sizeOf(context).width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: mainColor,
                           borderRadius: BorderRadius.circular(8),
@@ -118,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.all(16),
                         child: const Center(
                           child: CustomText(
-                            text: 'Log in',
+                            text: 'Sign Up',
                             size: 20,
                             color: Colors.white,
                           ),
@@ -129,11 +137,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 25,
                     ),
                     InkWell(
-                      onTap: () {
-                        authenticationCubit.signInWithGoogle();
-                      },
+                      onTap: () {},
                       child: Container(
-                        width: MediaQuery.sizeOf(context).width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: Colors.deepOrangeAccent,
                           borderRadius: BorderRadius.circular(8),
@@ -141,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.all(16),
                         child: const Center(
                           child: CustomText(
-                            text: 'Login with Google',
+                            text: 'Sign Up with Google',
                             size: 20,
                             color: Colors.white,
                           ),
@@ -155,7 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const CustomText(
-                          text: 'Do not have profile yet?',
+                          text: 'Already have an account?',
                           weight: FontWeight.w500,
                           size: 12,
                         ),
@@ -163,11 +169,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()),
+                                  builder: (context) => const SignInScreen()),
                             );
                           },
                           child: CustomText(
-                            text: 'Sign up',
+                            text: 'Sign In',
                             color: mainColor,
                             size: 18,
                             weight: FontWeight.w800,

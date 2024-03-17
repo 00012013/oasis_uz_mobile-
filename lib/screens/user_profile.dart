@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/app/material_app.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
+import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/modules/user.dart';
 import 'package:oasis_uz_mobile/screens/feedback_screen.dart';
 import 'package:oasis_uz_mobile/screens/language_screen.dart';
 import 'package:oasis_uz_mobile/screens/sign_in.dart';
@@ -18,35 +18,53 @@ class UserProfile extends StatelessWidget {
     final authenticationCubit = context.read<AuthenticationCubit>();
     return SafeArea(
       child: SingleChildScrollView(
-        child: BlocBuilder<AuthenticationCubit, User?>(
+        child: BlocBuilder<AuthenticationCubit, AuthenticationState?>(
           builder: (context, state) {
             return Column(
               children: [
                 const SizedBox(height: 10),
-                Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.grey[400]),
-                  child: const Icon(
-                    Icons.person_2_outlined,
-                    size: 40,
-                    color: Colors.black,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width * 0.4,
+                    ),
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Colors.grey[400]),
+                      child: const Icon(
+                        Icons.person_2_outlined,
+                        size: 40,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.sizeOf(context).width * 0.27,
+                    ),
+                    if (state is AuthenticationSuccess)
+                      IconButton(
+                        icon: const Icon(Icons.logout_rounded),
+                        onPressed: () {
+                          authenticationCubit.logout();
+                        },
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 10),
-                if (state != null)
+                if (state is AuthenticationSuccess)
                   Column(
                     children: [
                       CustomText(
-                        text: 'Welcome, ${state.fullName}!',
+                        text: 'Welcome, ${state.user!.fullName}!',
                         size: 22,
                         weight: FontWeight.bold,
                       ),
                     ],
                   ),
-                if (state == null)
+                if (state is AuthenticationFailure || state is LogoutState)
                   Column(
                     children: [
                       const CustomText(
@@ -69,7 +87,7 @@ class UserProfile extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           final state = authenticationCubit.state;
-                          if (state == null) {
+                          if (state is AuthenticationFailure) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(

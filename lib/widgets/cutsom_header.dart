@@ -12,7 +12,7 @@ class AppHeader extends StatelessWidget {
       elevation: 1,
       color: Colors.white,
       child: Center(
-        heightFactor: 3,
+        heightFactor: 2,
         child: CustomText(
           text: text,
           size: 20,

@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/sayid/oasis_uz_mobile/linux"
+    "cmake.sourceDirectory": "C:/Users/sayid/oasis_uz_mobile/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

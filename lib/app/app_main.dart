@@ -32,7 +32,7 @@ class _AppMainState extends State<AppMain> {
                 children: [
                   HomeScreen(),
                   SearchScreen(),
-                  MyCottagesScreen(),
+                  const MyCottagesScreen(),
                   const MessageScreen(),
                   const UserProfile(),
                 ],

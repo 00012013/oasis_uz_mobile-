@@ -94,4 +94,42 @@ class AuthenticationRepository {
       return null;
     }
   }
+
+  Future<String?> registerUser(User user) async {
+    final url = Uri.parse('$api/api/auth/register');
+    var jsonUser = json.encode(user.toJson());
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonUser);
+
+    if (response.statusCode == 200) {
+      return null;
+    } else {
+      return 'Failed to register user: ${response.statusCode}';
+    }
+  }
+
+  Future<User?> authenticateWithGoogle(String? idToken) async {
+    try {
+      final Map<String, String> headers = {
+        'Authorization': 'Bearer $idToken',
+      };
+      final response = await http.get(Uri.parse('$api/api/auth/auth/google'),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final String accessToken = data['accessToken'];
+        final String userName = data['fullName'];
+        await _storeToken(accessToken);
+        return User(null, userName, null, null);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  }
 }
