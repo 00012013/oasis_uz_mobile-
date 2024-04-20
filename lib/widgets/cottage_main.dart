@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
+import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:oasis_uz_mobile/widgets/custom_image.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 

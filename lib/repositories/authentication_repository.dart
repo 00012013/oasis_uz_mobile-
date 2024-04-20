@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
-import 'package:oasis_uz_mobile/repositories/modules/token.dart';
-import 'package:oasis_uz_mobile/repositories/modules/user.dart';
+import 'package:oasis_uz_mobile/repositories/models/token.dart';
+import 'package:oasis_uz_mobile/repositories/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepository {
@@ -23,8 +23,13 @@ class AuthenticationRepository {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final String accessToken = data['accessToken'];
         final String userName = data['fullName'];
+        final int userId = data['userId'];
+        final String? role = data['role'];
+
         await _storeToken(accessToken);
-        return User(null, userName, null, null);
+        var user = User(userId, userName, null, null, role);
+        await saveUser(user);
+        return user;
       } else {
         return null;
       }
@@ -123,8 +128,12 @@ class AuthenticationRepository {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final String accessToken = data['accessToken'];
         final String userName = data['fullName'];
+        final int id = data['userId'];
+        final String? role = data['role'];
         await _storeToken(accessToken);
-        return User(null, userName, null, null);
+        var user = User(id, userName, null, null, role);
+        saveUser(user);
+        return user;
       } else {
         return null;
       }

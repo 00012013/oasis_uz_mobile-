@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
-import 'package:oasis_uz_mobile/repositories/modules/feedback.dart';
+import 'package:oasis_uz_mobile/repositories/models/feedback.dart';
 
 class FeedbackRepository {
   Future<void> submitFeedback(Feedback feedback) async {

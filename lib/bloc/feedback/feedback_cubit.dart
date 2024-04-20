@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oasis_uz_mobile/repositories/feedback_repository.dart';
-import 'package:oasis_uz_mobile/repositories/modules/feedback.dart';
+import 'package:oasis_uz_mobile/repositories/models/feedback.dart';
 
 part 'feedback_state.dart';
 

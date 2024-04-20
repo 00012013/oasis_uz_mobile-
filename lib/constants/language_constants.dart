@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 
-//languages code
 const String ENGLISH = 'en';
 const String UZBEK = 'uz';
 const String RUSSIAN = 'ru';
@@ -33,7 +32,3 @@ Locale _locale(String languageCode) {
       return const Locale(ENGLISH, '');
   }
 }
-
-// AppLocalizations translation(BuildContext context) {
-//   return AppLocalizations.of(context)!;
-// }

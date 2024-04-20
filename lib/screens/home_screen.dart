@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                   child: Card(
                     elevation: 1,
                     child: FractionallySizedBox(
-                      widthFactor: 0.95,
+                      widthFactor: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -82,9 +82,10 @@ class HomeScreen extends StatelessWidget {
                                 width: 60,
                                 child: Image.asset("assets/images/logo2.jpg"),
                               ),
-                              const Text(
-                                'OASIS Uz',
-                                style: TextStyle(color: Colors.black),
+                              const CustomText(
+                                text: 'OASIS Uz',
+                                color: Colors.black,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -114,7 +115,7 @@ class HomeScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: FractionallySizedBox(
-                    widthFactor: 0.9,
+                    widthFactor: 0.95,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -245,7 +246,7 @@ class HomeScreen extends StatelessWidget {
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 10,
                                   crossAxisSpacing: 10,
-                                  childAspectRatio: 0.65,
+                                  childAspectRatio: 0.7,
                                 ),
                                 itemBuilder: (context, index) {
                                   return GestureDetector(

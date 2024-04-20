@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oasis_uz_mobile/app/app_main.dart';
 import 'package:oasis_uz_mobile/app/material_app.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
@@ -58,26 +59,26 @@ class UserProfile extends StatelessWidget {
                   Column(
                     children: [
                       CustomText(
-                        text: 'Welcome, ${state.user!.fullName}!',
+                        text:
+                            '${AppLocalizations.of(context)!.welcome}, ${state.user!.fullName}!',
                         size: 22,
                         weight: FontWeight.bold,
                       ),
                     ],
                   ),
-                if (state is AuthenticationFailure || state is LogoutState)
+                if (state is! AuthenticationSuccess)
                   Column(
                     children: [
-                      const CustomText(
-                        text: 'Welcome to Oasis Uz!',
+                      CustomText(
+                        text: AppLocalizations.of(context)!.welcomeToOasisUz,
                         size: 22,
                         weight: FontWeight.bold,
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        child: const CustomText(
-                          text:
-                              "Sign in to send and receive messages, post new ads, and review your favorite ads. Like your profile so far? Create a profile in minutes.",
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        child: CustomText(
+                          text: AppLocalizations.of(context)!.singUpSubText,
                           maxLines: 5,
                           size: 16,
                           color: Colors.grey,
@@ -87,16 +88,19 @@ class UserProfile extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           final state = authenticationCubit.state;
-                          if (state is AuthenticationFailure) {
+                          if (state is! AuthenticationSuccess) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignInScreen()),
+                                  builder: (context) => const SignInScreen(
+                                        initialPageIndex: 4,
+                                      )),
                             );
                           } else {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => const MyApp()),
+                                  builder: (context) =>
+                                      const AppMain(initialPageIndex: 4)),
                             );
                           }
                         },
@@ -107,8 +111,8 @@ class UserProfile extends StatelessWidget {
                             color: mainColor,
                           ),
                           padding: const EdgeInsets.all(16),
-                          child: const CustomText(
-                            text: 'Sign in or Sign up',
+                          child: CustomText(
+                            text: AppLocalizations.of(context)!.signInSignUp,
                             size: 20,
                             textAlign: TextAlign.center,
                             color: Colors.white,
@@ -120,7 +124,7 @@ class UserProfile extends StatelessWidget {
                 const SizedBox(height: 20),
                 Center(
                   child: FractionallySizedBox(
-                    widthFactor: 0.9,
+                    widthFactor: 0.95,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -150,7 +154,7 @@ class UserProfile extends StatelessWidget {
                 const Divider(thickness: 1.5),
                 Center(
                   child: FractionallySizedBox(
-                    widthFactor: 0.9,
+                    widthFactor: 0.95,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

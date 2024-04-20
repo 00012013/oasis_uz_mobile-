@@ -7,7 +7,7 @@ import 'package:oasis_uz_mobile/bloc/calendar/calendar_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/carousel/carousel_slider_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/isVisible/visible_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
+import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:oasis_uz_mobile/widgets/custom_image.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -131,6 +131,7 @@ class CottageScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RichText(
                             text: TextSpan(
@@ -143,7 +144,7 @@ class CottageScreen extends StatelessWidget {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: ' ${cottage!.weekendDaysPrice} USD',
+                                  text: ' ${cottage!.weekDaysPrice} USD',
                                   style: TextStyle(
                                       color: mainColor,
                                       fontWeight: FontWeight.w500),
@@ -312,10 +313,8 @@ class CottageScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  CustomText(
-                    text: cottage!.description,
-                    weight: FontWeight.w500,
-                    size: 18,
+                  Text(
+                    cottage!.description!.trim(),
                   ),
                 ],
               ),

@@ -3,21 +3,21 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
 import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
-import 'package:oasis_uz_mobile/repositories/modules/user.dart';
+import 'package:oasis_uz_mobile/repositories/models/user.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit(this._authenticationRepository)
-      : super(AuthenticationInitial()) {
-    initialize();
-  }
+      : super(AuthenticationInitial());
 
   final AuthenticationRepository _authenticationRepository;
 
   Future<void> initialize() async {
     final User? user = await _authenticationRepository.checkAuth();
     if (user != null) {
+      print("emmited");
       emit(AuthenticationSuccess(user));
     } else {
+      print("emmited");
       emit(const AuthenticationFailure(''));
     }
   }
@@ -38,7 +38,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       await GoogleSignIn().signOut();
 
       final GoogleSignInAccount? account =
-          await GoogleSignIn(serverClientId: ClientId).signIn();
+          await GoogleSignIn(serverClientId: clientId).signIn();
       final GoogleSignInAuthentication authentication =
           await account!.authentication;
       final String? idToken = authentication.idToken;
@@ -80,5 +80,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } else {
       emit(RegistrationFailure(registerUser));
     }
+  }
+
+  Future<User> getUser() async {
+    final User? user = await _authenticationRepository.checkAuth();
+
+    return user!;
   }
 }

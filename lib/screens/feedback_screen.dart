@@ -84,7 +84,7 @@ class FeedbackScreenContent extends StatelessWidget {
             children: [
               Center(
                 child: FractionallySizedBox(
-                  widthFactor: 0.9,
+                  widthFactor: 0.95,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

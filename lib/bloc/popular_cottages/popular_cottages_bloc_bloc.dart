@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
+import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'popular_cottages_bloc_event.dart';

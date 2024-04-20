@@ -3,6 +3,7 @@ import 'package:oasis_uz_mobile/app/material_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/constants/language_constants.dart';
+import 'package:oasis_uz_mobile/util/language.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -77,6 +78,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               onTap: () {
                 MyApp.setLocale(context, const Locale('uz'));
                 selectedLanguage = UZBEK;
+                LanguagePreferences.saveLanguage(UZBEK);
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.4,
@@ -86,7 +88,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 padding: const EdgeInsets.all(16),
                 child: CustomText(
-                  text: '🇺🇿  O\'zbek',
+                  text: '🇺🇿  O\'z',
                   size: 22,
                   color:
                       selectedLanguage != UZBEK ? Colors.black : Colors.white,
@@ -97,6 +99,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               onTap: () {
                 MyApp.setLocale(context, const Locale('ru'));
                 selectedLanguage = RUSSIAN;
+                LanguagePreferences.saveLanguage(RUSSIAN);
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.4,
@@ -106,7 +109,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 padding: const EdgeInsets.all(16),
                 child: CustomText(
-                  text: '🇷🇺   Русский',
+                  text: '🇷🇺   Ru',
                   size: 22,
                   color:
                       selectedLanguage != RUSSIAN ? Colors.black : Colors.white,
@@ -117,6 +120,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
               onTap: () {
                 MyApp.setLocale(context, const Locale('en'));
                 selectedLanguage = ENGLISH;
+                LanguagePreferences.saveLanguage(ENGLISH);
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width * 0.4,
@@ -126,7 +130,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 ),
                 padding: const EdgeInsets.all(16),
                 child: CustomText(
-                  text: '🇺🇸   English',
+                  text: '🇺🇸   Eng',
                   size: 22,
                   color:
                       selectedLanguage != ENGLISH ? Colors.black : Colors.white,

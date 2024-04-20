@@ -37,7 +37,7 @@ class WishlistScreen extends StatelessWidget {
                     if (cottages.isNotEmpty) {
                       return GridView.builder(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
+                            horizontal: 10, vertical: 8),
                         itemCount: cottages.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),

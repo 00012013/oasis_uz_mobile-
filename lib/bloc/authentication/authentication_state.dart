@@ -1,4 +1,4 @@
-import 'package:oasis_uz_mobile/repositories/modules/user.dart';
+import 'package:oasis_uz_mobile/repositories/models/user.dart';
 
 abstract class AuthenticationState {
   const AuthenticationState();

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
+import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
+import 'package:oasis_uz_mobile/screens/sign_in.dart';
 import 'package:oasis_uz_mobile/widgets/cutsom_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,24 +16,51 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   bool showReceivedMessages = true;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            AppHeader(AppLocalizations.of(context)!.messages),
-            const SizedBox(height: 10),
-            _buildTopBar(context),
-          ],
+    final AuthenticationCubit authenticationCubit =
+        BlocProvider.of<AuthenticationCubit>(context);
+    var authState = authenticationCubit.state;
+
+    if (authState is! AuthenticationSuccess) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => const SignInScreen(initialPageIndex: 3)),
+        );
+      });
+      return Container();
+    } else {
+      return SafeArea(
+        child: SingleChildScrollView(
+          child: BlocListener<AuthenticationCubit, AuthenticationState>(
+            listener: (context, state) {
+              if (state is AuthenticationFailure) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const SignInScreen(
+                            initialPageIndex: 3,
+                          )),
+                );
+              }
+            },
+            child: Column(
+              children: [
+                AppHeader(AppLocalizations.of(context)!.messages),
+                const SizedBox(height: 10),
+                _buildTopBar(context),
+              ],
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget _buildTopBar(BuildContext context) {
     return FractionallySizedBox(
-      widthFactor: 0.9,
+      widthFactor: 0.95,
       child: Row(
         children: [
           Expanded(

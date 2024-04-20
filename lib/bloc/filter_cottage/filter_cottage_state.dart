@@ -25,3 +25,17 @@ final class FilterCottageLoaded extends FilterCottageState {
     );
   }
 }
+
+class SearchLoadedState extends FilterCottageState {
+  final List<Cottage> cottage;
+
+  const SearchLoadedState(this.cottage);
+
+  FilterCottageLoaded copyWith({
+    List<Cottage>? cottage,
+  }) {
+    return FilterCottageLoaded(
+      cottage ?? this.cottage,
+    );
+  }
+}

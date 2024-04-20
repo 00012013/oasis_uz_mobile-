@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
-import 'package:oasis_uz_mobile/repositories/modules/filter.dart';
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
+import 'package:oasis_uz_mobile/repositories/models/filter.dart';
+import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:oasis_uz_mobile/util/shared_preferences.dart';
 
 part 'filter_cottage_event.dart';
@@ -53,6 +53,10 @@ class FilterCottageBloc extends Bloc<FilterCottageEvent, FilterCottageState> {
           }
 
           emit(FilterCottageLoaded(cottages));
+        } else if (event is SearchTextNameChanged) {
+          List<Cottage> cottage =
+              await cottageRepository.fetchCottageByName(event.searchTerm);
+          emit(FilterCottageLoaded(cottage));
         } else if (event is FilterCottageEvents) {
           emit(FilterCottageLoading());
         }

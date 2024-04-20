@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:oasis_uz_mobile/repositories/modules/equipments.dart';
+import 'package:oasis_uz_mobile/repositories/models/equipments.dart';
 
 part 'equipment_event.dart';
 part 'equipment_state.dart';
@@ -26,5 +26,13 @@ class EquipmentBloc extends Bloc<EquipmentEvent, EquipmentState> {
       }
       emit(EquipmentLoaded(updatedItems));
     });
+  }
+
+  List<String> getCheckedItems() {
+    return (state as EquipmentLoaded)
+        .items
+        .where((equipment) => equipment.isChecked)
+        .map((e) => e.name)
+        .toList();
   }
 }

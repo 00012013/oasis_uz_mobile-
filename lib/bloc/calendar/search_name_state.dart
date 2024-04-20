@@ -1,19 +1,19 @@
-part of 'search_name_bloc.dart';
+// part of 'search_name_bloc.dart';
 
-sealed class SearchNameState {
-  const SearchNameState();
-}
+// sealed class SearchNameState {
+//   const SearchNameState();
+// }
 
-final class SearchNameInitial extends SearchNameState {}
+// final class SearchNameInitial extends SearchNameState {}
 
-class SearchLoadedState extends SearchNameState {
-  final List<String> searchResults;
+// class SearchLoadedState extends SearchNameState {
+//   final List<Cottage> searchResults;
 
-  SearchLoadedState(this.searchResults);
-}
+//   SearchLoadedState(this.searchResults);
+// }
 
-class SearchErrorState extends SearchNameState {
-  final String errorMessage;
+// class SearchErrorState extends SearchNameState {
+//   final String errorMessage;
 
-  SearchErrorState(this.errorMessage);
-}
+//   SearchErrorState(this.errorMessage);
+// }

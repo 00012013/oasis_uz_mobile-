@@ -5,7 +5,7 @@ import 'package:oasis_uz_mobile/bloc/equipment/equipment_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/filter/filter_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/price_range/price_range_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/modules/filter.dart';
+import 'package:oasis_uz_mobile/repositories/models/filter.dart';
 import 'package:oasis_uz_mobile/widgets/custom_slider.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/drop_down_widget.dart';
@@ -35,15 +35,15 @@ class FilterScreen extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: FractionallySizedBox(
-            widthFactor: 0.9,
+            widthFactor: 0.95,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
                   height: 20,
                 ),
-                const CustomText(
-                  text: 'Sorting types',
+                CustomText(
+                  text: AppLocalizations.of(context)!.sortingTypes,
                   weight: FontWeight.w600,
                 ),
                 const SizedBox(
@@ -57,7 +57,7 @@ class FilterScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FilterOptionWidget(
-                              label: 'Latest',
+                              label: AppLocalizations.of(context)!.latest,
                               isSelected: state is FilterByLatestSelected,
                               onTap: () {
                                 BlocProvider.of<FilterBloc>(context).add(
@@ -68,7 +68,7 @@ class FilterScreen extends StatelessWidget {
                               },
                             ),
                             FilterOptionWidget(
-                              label: 'Cheapest',
+                              label: AppLocalizations.of(context)!.cheapest,
                               isSelected: state is FilterByCheapestSelected,
                               onTap: () {
                                 BlocProvider.of<FilterBloc>(context).add(
@@ -79,7 +79,8 @@ class FilterScreen extends StatelessWidget {
                               },
                             ),
                             FilterOptionWidget(
-                              label: 'Most Expensive',
+                              label:
+                                  AppLocalizations.of(context)!.mostExpensive,
                               isSelected:
                                   state is FilterByMostExpensiveSelected,
                               onTap: () {
@@ -99,8 +100,8 @@ class FilterScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const CustomText(
-                  text: 'Popular places',
+                CustomText(
+                  text: AppLocalizations.of(context)!.popularPlaces,
                   weight: FontWeight.w600,
                 ),
                 const SizedBox(height: 15),
@@ -120,8 +121,8 @@ class FilterScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                const CustomText(
-                  text: 'Price Range',
+                CustomText(
+                  text: AppLocalizations.of(context)!.priceRange,
                   weight: FontWeight.w600,
                 ),
                 const SizedBox(height: 10),
@@ -163,8 +164,8 @@ class FilterScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 15),
-                const CustomText(
-                  text: 'Additional FIlters',
+                CustomText(
+                  text: AppLocalizations.of(context)!.additionalFilters,
                   weight: FontWeight.w600,
                 ),
                 const SizedBox(height: 15),
@@ -246,7 +247,7 @@ class FilterScreen extends StatelessWidget {
             if (equipmentState is EquipmentLoaded) {
               equipmentList = equipmentState.items
                   .where((item) => item.isChecked)
-                  .map((e) => e.name.toUpperCase())
+                  .map((e) => e.name)
                   .toList();
             }
 
@@ -255,8 +256,8 @@ class FilterScreen extends StatelessWidget {
 
             Navigator.of(context).pop(filterDto);
           },
-          child: const CustomText(
-            text: 'Apply changes',
+          child: CustomText(
+            text: AppLocalizations.of(context)!.applyFilter,
             size: 16,
             color: Colors.white,
           ),

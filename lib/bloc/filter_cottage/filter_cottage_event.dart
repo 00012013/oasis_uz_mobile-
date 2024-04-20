@@ -12,3 +12,9 @@ class FilterCottage extends FilterCottageEvent {
   final Filter? dto;
   const FilterCottage(this.dto);
 }
+
+class SearchTextNameChanged extends FilterCottageEvent {
+  final String searchTerm;
+
+  const SearchTextNameChanged(this.searchTerm);
+}

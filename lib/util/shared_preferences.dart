@@ -1,4 +1,4 @@
-import 'package:oasis_uz_mobile/repositories/modules/cottage.dart';
+import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
