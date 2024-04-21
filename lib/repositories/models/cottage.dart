@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:oasis_uz_mobile/repositories/enums/status.dart';
 import 'package:oasis_uz_mobile/repositories/models/attachment.dart';
 
 part 'cottage.g.dart';
@@ -15,6 +16,7 @@ class Cottage {
   final int? guestCount;
   final int? totalRoomCount;
   final List<String>? equipmentsList;
+  final Status status;
   List<DateTime>? bookedDates = [];
   final Attachment? mainAttachment;
   final List<Attachment>? attachmentsList;
@@ -35,6 +37,7 @@ class Cottage {
     this.mainAttachment,
     this.attachmentsList,
     this.isFavorite = false,
+    this.status = Status.APPROVED,
   });
 
   Cottage copyWith({

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/equipment/equipment_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/image_management/image_management_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/navigation/navigation_bloc.dart';

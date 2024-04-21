@@ -150,7 +150,8 @@ class SearchScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                                     child: CottageScreen(
-                                                        state.cottage[index])),
+                                                        state.cottage[index],
+                                                        false)),
                                           ),
                                         ),
                                     child: CottageWidget(state.cottage[index]));

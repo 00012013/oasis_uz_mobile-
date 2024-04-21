@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
 import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
 import 'package:oasis_uz_mobile/repositories/models/filter.dart';
 import 'package:oasis_uz_mobile/util/cottage_util.dart';
 
 class CottageRepository {
+  final AuthenticationRepository _authenticationRepository =
+      AuthenticationRepository();
   Future<List<Cottage>> fetchCottages() async {
     final response = await http.get(Uri.parse('$api/api/cottage/get-banner'));
     if (response.statusCode == 200) {
@@ -99,9 +102,10 @@ class CottageRepository {
     }
   }
 
-  Future<bool> uploadFiles(
-      List<Asset> files, int cottageId, String token) async {
+  Future<bool> uploadFiles(List<Asset> files, int cottageId) async {
     List<File> filesList = await CottageUtil.assetsToFiles(files);
+    var token = await _authenticationRepository.retrieveToken();
+
     final Map<String, String> headers = {
       'Authorization': 'Bearer $token',
     };
@@ -129,9 +133,10 @@ class CottageRepository {
     }
   }
 
-  Future<bool> uploadMainFile(
-      List<Asset> files, int cottageId, String token) async {
+  Future<bool> uploadMainFile(List<Asset> files, int cottageId) async {
     List<File> filesList = await CottageUtil.assetsToFiles(files);
+    var token = await _authenticationRepository.retrieveToken();
+
     final Map<String, String> headers = {
       'Authorization': 'Bearer $token',
     };
@@ -160,9 +165,9 @@ class CottageRepository {
     }
   }
 
-  Future<Cottage?> addCottage(
-      Cottage cottageDTO, int userId, String token) async {
+  Future<Cottage?> addCottage(Cottage cottageDTO, int userId) async {
     final url = Uri.parse('$api/api/cottage/add/$userId');
+    var token = await _authenticationRepository.retrieveToken();
 
     final response = await http.post(
       url,
@@ -178,5 +183,46 @@ class CottageRepository {
     } else {
       return null;
     }
+  }
+
+  Future<List<Cottage?>> getPendingCottages(int userId) async {
+    var token = await _authenticationRepository.retrieveToken();
+    final url = Uri.parse('$api/api/cottage/get-pending/$userId');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList =
+          json.decode(utf8.decode(response.bodyBytes));
+      final List<Cottage> cottages =
+          jsonList.map((json) => Cottage.fromJson(json)).toList();
+      return cottages;
+    } else {
+      return [];
+    }
+  }
+
+  Future<void> changeStatus(Cottage cottageDTO, int userId) async {
+    var token = await _authenticationRepository.retrieveToken();
+
+    final url = Uri.parse('$api/api/cottage/change-status/$userId');
+
+    final response = await http.post(
+      url,
+      body: jsonEncode(cottageDTO.toJson()),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+    } else {}
   }
 }

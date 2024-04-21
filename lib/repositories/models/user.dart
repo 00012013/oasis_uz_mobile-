@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
 
 part 'user.g.dart';
 
@@ -8,7 +9,7 @@ class User {
   String? fullName;
   String? password;
   String? email;
-  String? role;
+  UserRole? role;
 
   User(this.id, this.fullName, this.password, this.email, this.role);
 

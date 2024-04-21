@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
-import 'package:oasis_uz_mobile/app/material_app.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
+import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
+import 'package:oasis_uz_mobile/screens/approve_cottages.dart';
 import 'package:oasis_uz_mobile/screens/feedback_screen.dart';
 import 'package:oasis_uz_mobile/screens/language_screen.dart';
 import 'package:oasis_uz_mobile/screens/sign_in.dart';
@@ -152,40 +153,80 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
                 const Divider(thickness: 1.5),
-                Center(
-                  child: FractionallySizedBox(
-                    widthFactor: 0.95,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                            text: AppLocalizations.of(context)!.other,
-                            color: Colors.grey),
-                        ListTile(
-                          title: CustomText(
-                              text: AppLocalizations.of(context)!.feedback),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                (AuthenticationCubit.currentUserRole != UserRole.ADMIN)
+                    ? Center(
+                        child: FractionallySizedBox(
+                          widthFactor: 0.95,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                  text: AppLocalizations.of(context)!.other,
+                                  color: Colors.grey),
+                              ListTile(
+                                title: CustomText(
+                                    text:
+                                        AppLocalizations.of(context)!.feedback),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FeedbackScreen()));
+                                },
+                              ),
+                              ListTile(
+                                title: CustomText(
+                                    text: AppLocalizations.of(context)!
+                                        .aboutProgram),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                                onTap: () {},
+                              ),
+                            ],
                           ),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const FeedbackScreen()));
-                          },
                         ),
-                        ListTile(
-                          title: CustomText(
-                              text: AppLocalizations.of(context)!.aboutProgram),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                      )
+                    : Center(
+                        child: FractionallySizedBox(
+                          widthFactor: 0.95,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                  text: AppLocalizations.of(context)!.other,
+                                  color: Colors.grey),
+                              ListTile(
+                                title: CustomText(
+                                    text:
+                                        AppLocalizations.of(context)!.feedback),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                                onTap: () {},
+                              ),
+                              ListTile(
+                                title:
+                                    const CustomText(text: 'Approve cottages'),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ApproveCottageScreen()));
+                                },
+                              ),
+                            ],
                           ),
-                          onTap: () {},
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
                 const Divider(thickness: 1.5),
                 const SizedBox(height: 10),
                 CustomText(
@@ -202,43 +243,3 @@ class UserProfile extends StatelessWidget {
     );
   }
 }
-
-
- // Center(
-            //   child: FractionallySizedBox(
-            //     widthFactor: 0.9,
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         CustomText(
-            //             text: AppLocalizations.of(context)!.myProfilte,
-            //             color: Colors.grey),
-            //         ListTile(
-            //           title: CustomText(
-            //               text: AppLocalizations.of(context)!.myProfilte),
-            //           leading: const Icon(Icons.person_2_outlined),
-            //           trailing: const Icon(
-            //             Icons.arrow_forward_ios_rounded,
-            //             size: 20,
-            //           ),
-            //           onTap: () {
-            //             final state = authenticationCubit.state;
-            //             if (state == AuthenticationStatus.unauthenticated) {
-            //               Navigator.push(
-            //                 context,
-            //                 MaterialPageRoute(
-            //                     builder: (context) => const SignInScreen()),
-            //               );
-            //             } else {
-            //               Navigator.of(context).pushReplacement(
-            //                 MaterialPageRoute(
-            //                     builder: (context) => const MyApp()),
-            //               );
-            //             }
-            //           },
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            // const Divider(thickness: 1.5),

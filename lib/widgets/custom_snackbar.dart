@@ -28,10 +28,13 @@ class CustomSnackBar {
               color: Colors.white,
             ),
             const SizedBox(width: 10),
-            Text(
-              errorMessage,
-              style: const TextStyle(
-                color: Colors.white,
+            Flexible(
+              child: Text(
+                maxLines: 3,
+                errorMessage,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

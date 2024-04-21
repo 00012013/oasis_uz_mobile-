@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
+import 'package:oasis_uz_mobile/bloc/approveCottage/approve_cottage_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/cottageCubit/cottage_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
@@ -28,9 +29,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late final AuthenticationCubit authenticationCubit;
+
   @override
   void initState() {
     super.initState();
+    authenticationCubit = AuthenticationCubit(AuthenticationRepository());
+    authenticationCubit.initialize();
     _getLocaleFromPreferences();
   }
 
@@ -79,14 +84,16 @@ class _MyAppState extends State<MyApp> {
           create: (context) => PopularCottagesBlocBloc(CottageRepository()),
         ),
         BlocProvider(
-          create: (context) =>
-              AuthenticationCubit(AuthenticationRepository())..initialize(),
+          create: (context) => authenticationCubit,
         ),
         BlocProvider(
             create: (context) => FilterCottageBloc(CottageRepository())),
         BlocProvider(create: (context) => NavigationBloc()),
         BlocProvider(
           create: (context) => CottageCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ApproveCottageCubit(),
         ),
       ],
       child: MaterialApp(

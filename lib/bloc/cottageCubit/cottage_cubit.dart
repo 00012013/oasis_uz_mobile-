@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
-import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 import 'package:oasis_uz_mobile/repositories/models/attachment.dart';
 import 'package:oasis_uz_mobile/repositories/models/cottage.dart';
@@ -84,15 +83,12 @@ class CottageCubit extends Cubit<Cottage> {
 
   Future<void> addCottage(Cottage cottageDTO, int userId, List<Asset> files,
       List<Asset> mainFile, BuildContext context) async {
-    AuthenticationRepository authenticationRepo = AuthenticationRepository();
-    String? retrieveToken = await authenticationRepo.retrieveToken();
-    Cottage? cottage =
-        await cottageRepository.addCottage(cottageDTO, userId, retrieveToken!);
+    Cottage? cottage = await cottageRepository.addCottage(cottageDTO, userId);
     if (cottage != null) {
-      bool uploadFiles = await cottageRepository.uploadFiles(
-          files, cottage.id!, retrieveToken);
-      bool uploadMainFile = await cottageRepository.uploadMainFile(
-          mainFile, cottage.id!, retrieveToken);
+      bool uploadFiles =
+          await cottageRepository.uploadFiles(files, cottage.id!);
+      bool uploadMainFile =
+          await cottageRepository.uploadMainFile(mainFile, cottage.id!);
       CustomSnackBar(backgroundColor: Colors.green).showError(
         context,
         "Saved",

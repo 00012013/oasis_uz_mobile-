@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
+import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
+import 'package:oasis_uz_mobile/repositories/models/idTokenDto.dart';
 import 'package:oasis_uz_mobile/repositories/models/token.dart';
 import 'package:oasis_uz_mobile/repositories/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,8 +26,11 @@ class AuthenticationRepository {
         final String accessToken = data['accessToken'];
         final String userName = data['fullName'];
         final int userId = data['userId'];
-        final String? role = data['role'];
-
+        final String userRole = data['role'];
+        UserRole role = UserRole.USER;
+        if (userRole == 'ADMIN') {
+          role = UserRole.ADMIN;
+        }
         await _storeToken(accessToken);
         var user = User(userId, userName, null, null, role);
         await saveUser(user);
@@ -118,20 +123,23 @@ class AuthenticationRepository {
 
   Future<User?> authenticateWithGoogle(String? idToken) async {
     try {
-      final Map<String, String> headers = {
-        'Authorization': 'Bearer $idToken',
-      };
-      final response = await http.get(Uri.parse('$api/api/auth/auth/google'),
-          headers: headers);
+      IdTokenDto dto = IdTokenDto(idToken!);
+      var requestBody = json.encode(dto.toJson());
+      final response = await http.post(
+        Uri.parse('$api/api/auth/auth/google'),
+        body: requestBody,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final String accessToken = data['accessToken'];
         final String userName = data['fullName'];
         final int id = data['userId'];
-        final String? role = data['role'];
         await _storeToken(accessToken);
-        var user = User(id, userName, null, null, role);
+        var user = User(id, userName, null, null, UserRole.USER);
         saveUser(user);
         return user;
       } else {

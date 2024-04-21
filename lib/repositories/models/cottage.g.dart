@@ -29,6 +29,8 @@ Cottage _$CottageFromJson(Map<String, dynamic> json) => Cottage(
           ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
           .toList(),
       isFavorite: json['isFavorite'] as bool? ?? false,
+      status: $enumDecodeNullable(_$StatusEnumMap, json['status']) ??
+          Status.APPROVED,
     );
 
 Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
@@ -42,6 +44,7 @@ Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
       'guestCount': instance.guestCount,
       'totalRoomCount': instance.totalRoomCount,
       'equipmentsList': instance.equipmentsList,
+      'status': _$StatusEnumMap[instance.status]!,
       'bookedDates':
           instance.bookedDates?.map((e) => e.toIso8601String()).toList(),
       'mainAttachment': instance.mainAttachment?.toJson(),
@@ -49,3 +52,9 @@ Map<String, dynamic> _$CottageToJson(Cottage instance) => <String, dynamic>{
           instance.attachmentsList?.map((e) => e.toJson()).toList(),
       'isFavorite': instance.isFavorite,
     };
+
+const _$StatusEnumMap = {
+  Status.APPROVED: 'APPROVED',
+  Status.DECLINED: 'DECLINED',
+  Status.PENDING: 'PENDING',
+};

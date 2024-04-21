@@ -264,7 +264,8 @@ class HomeScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                       child: CottageScreen(
-                                                          cottages[index])),
+                                                          cottages[index],
+                                                          false)),
                                             ),
                                           ),
                                       child: CottageWidget(cottages[index]));
