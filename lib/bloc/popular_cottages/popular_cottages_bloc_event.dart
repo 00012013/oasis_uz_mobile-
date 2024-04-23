@@ -6,6 +6,8 @@ abstract class PopularCottagesBlocEvent {
 
 class FetchPopularCottageEvent extends PopularCottagesBlocEvent {}
 
+class FetchNextPageEvent extends PopularCottagesBlocEvent {}
+
 class ToggleFavoriteEvent extends PopularCottagesBlocEvent {
   final int cottageId;
 

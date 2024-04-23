@@ -9,7 +9,8 @@ import 'package:path_provider/path_provider.dart';
 class CottageUtil {
   static Future<List<File>> assetsToFiles(List<Asset> assets) async {
     List<File> files = [];
-    for (var asset in assets) {
+    List<Asset> assetsCopy = List.from(assets);
+    for (var asset in assetsCopy) {
       ByteData byteData = await asset.getByteData();
       Uint8List bytes = byteData.buffer.asUint8List();
       String fileName = 'image_${DateTime.now()}';

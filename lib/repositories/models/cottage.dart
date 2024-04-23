@@ -13,12 +13,12 @@ class Cottage {
   final double? weekendDaysPrice;
   final double? latitude;
   final double? longitude;
-  final int? guestCount;
-  final int? totalRoomCount;
+  int? guestCount;
+  int? totalRoomCount;
   final List<String>? equipmentsList;
   final Status status;
   List<DateTime>? bookedDates = [];
-  final Attachment? mainAttachment;
+  Attachment? mainAttachment;
   final List<Attachment>? attachmentsList;
   bool isFavorite;
 
@@ -42,6 +42,7 @@ class Cottage {
 
   Cottage copyWith({
     List<Attachment>? attachmentsList,
+    Attachment? mainAttachment,
     String? name,
     double? weekDaysPrice,
     double? weekendDaysPrice,
@@ -56,6 +57,7 @@ class Cottage {
   }) {
     return Cottage(
       attachmentsList: attachmentsList ?? this.attachmentsList,
+      mainAttachment: mainAttachment ?? this.mainAttachment,
       name: name ?? this.name,
       weekDaysPrice: weekDaysPrice ?? this.weekDaysPrice,
       weekendDaysPrice: weekendDaysPrice ?? this.weekendDaysPrice,

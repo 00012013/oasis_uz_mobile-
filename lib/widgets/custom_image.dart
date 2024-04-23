@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
@@ -10,7 +8,9 @@ class CustomImage extends StatelessWidget {
   final String imgUrl;
   double borderRadius = 10;
   bool all;
-  CustomImage(this.imgUrl, this.borderRadius, this.all, {super.key});
+  bool isFullScreen;
+  CustomImage(this.imgUrl, this.borderRadius, this.all, this.isFullScreen,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CustomImage extends StatelessWidget {
                   Radius.circular(borderRadius),
                 ),
           child: CachedNetworkImage(
-            width: MediaQuery.sizeOf(context).width * 1,
+            width: isFullScreen ? MediaQuery.sizeOf(context).width * 1 : null,
             imageUrl: '$api/api/cottage-attachment/get-file/$imgUrl',
             fit: BoxFit.cover,
           ),

@@ -76,6 +76,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   Future<void> logout() async {
     await _authenticationRepository.logout();
+    currentUserRole = UserRole.USER;
     emit(LogoutState());
   }
 

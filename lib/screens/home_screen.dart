@@ -2,26 +2,36 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/bloc/carousel/carousel_slider_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/cottage/cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/isVisible/visible_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
-import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 import 'package:oasis_uz_mobile/screens/cottage_screen.dart';
 import 'package:oasis_uz_mobile/screens/wishlist_screen.dart';
 import 'package:oasis_uz_mobile/widgets/cottage_main.dart';
-import 'package:oasis_uz_mobile/widgets/custom_banner_images.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 import 'package:oasis_uz_mobile/widgets/service_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-  final CottageRepository cottageRepository = CottageRepository();
+  final ScrollController _scrollController = ScrollController();
+
+  void setupScrollController(context) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels != 0) {
+          BlocProvider.of<PopularCottagesBlocBloc>(context)
+              .add(FetchNextPageEvent());
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    setupScrollController(context);
     List serviceList = [
       {
         "name": AppLocalizations.of(context)!.dacha,
@@ -53,13 +63,11 @@ class HomeScreen extends StatelessWidget {
     ];
     return SafeArea(
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
               create: (context) => CarouselSliderBloc(),
-            ),
-            BlocProvider(
-              create: (context) => CottageBloc(cottageRepository),
             ),
           ],
           child: Align(
@@ -127,19 +135,11 @@ class HomeScreen extends StatelessWidget {
                                   .add(FetchCottageEvent());
                               return Container();
                             } else if (state is CottagesLoaded) {
-                              List<AppBannerImages> bannerImages = state
-                                  .cottages
-                                  .map(
-                                    (cottage) => AppBannerImages(
-                                        cottage.mainAttachment!.id.toString(),
-                                        cottage.name,
-                                        cottage.weekDaysPrice),
-                                  )
-                                  .toList();
+                              var cottages = state.cottages;
                               return Column(
                                 children: [
                                   CarouselSlider(
-                                    items: bannerImages,
+                                    items: state.cottages,
                                     options: CarouselOptions(
                                       height: 200,
                                       enlargeCenterPage: true,
@@ -163,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                                     builder: (context, state) {
                                       if (state is CarouselIndexUpdated) {
                                         return DotsIndicator(
-                                          dotsCount: bannerImages.length,
+                                          dotsCount: cottages.length,
                                           position:
                                               state.currentIndex.toDouble(),
                                           decorator: DotsDecorator(
@@ -185,11 +185,6 @@ class HomeScreen extends StatelessWidget {
                                   const SizedBox(height: 10),
                                 ],
                               );
-                            } else if (state is CottageLoading) {
-                              context
-                                  .read<CottageBloc>()
-                                  .add(FetchCottageEvent());
-                              return const Text('Cottage Loading!');
                             } else {
                               return Container();
                             }
@@ -231,45 +226,57 @@ class HomeScreen extends StatelessWidget {
                               context
                                   .read<PopularCottagesBlocBloc>()
                                   .add(FetchPopularCottageEvent());
-
                               return Container();
                             } else if (state is PopularCottagesLoaded) {
                               var cottages = state.cottages;
-                              return GridView.builder(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                itemCount: cottages.length,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: 0.7,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                      onTap: () => Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MultiBlocProvider(
-                                                      providers: [
-                                                    BlocProvider.value(
-                                                      value:
-                                                          CarouselSliderBloc(),
-                                                    ),
-                                                    BlocProvider.value(
-                                                      value: VisibleBloc(),
-                                                    ),
-                                                  ],
-                                                      child: CottageScreen(
-                                                          cottages[index],
-                                                          false)),
-                                            ),
-                                          ),
-                                      child: CottageWidget(cottages[index]));
+                              return NotificationListener<ScrollNotification>(
+                                onNotification:
+                                    (ScrollNotification scrollInfo) {
+                                  if (scrollInfo is ScrollEndNotification &&
+                                      scrollInfo.metrics.pixels >=
+                                          scrollInfo.metrics.maxScrollExtent) {
+                                    context
+                                        .read<PopularCottagesBlocBloc>()
+                                        .add(FetchNextPageEvent());
+                                  }
+                                  return true;
                                 },
+                                child: GridView.builder(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  itemCount: cottages.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                    childAspectRatio: 0.7,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              MultiBlocProvider(
+                                            providers: [
+                                              BlocProvider.value(
+                                                value: CarouselSliderBloc(),
+                                              ),
+                                              BlocProvider.value(
+                                                value: VisibleBloc(),
+                                              ),
+                                            ],
+                                            child: CottageScreen(
+                                                cottages[index], false),
+                                          ),
+                                        ),
+                                      ),
+                                      child: CottageWidget(cottages[index]),
+                                    );
+                                  },
+                                ),
                               );
                             } else {
                               return Container();
@@ -288,3 +295,57 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
+  // BlocBuilder<PopularCottagesBlocBloc,
+  //                           PopularCottagesBlocState>(
+  //                         builder: (context, state) {
+  //                           if (state is PopularCottagesBlocInitial) {
+  //                             context
+  //                                 .read<PopularCottagesBlocBloc>()
+  //                                 .add(FetchPopularCottageEvent());
+
+  //                             return Container();
+  //                           } else if (state is PopularCottagesLoaded) {
+  //                             var cottages = state.cottages;
+  //                             return GridView.builder(
+  //                               padding:
+  //                                   const EdgeInsets.symmetric(vertical: 8),
+  //                               itemCount: cottages.length,
+  //                               shrinkWrap: true,
+  //                               physics: const NeverScrollableScrollPhysics(),
+  //                               gridDelegate:
+  //                                   const SliverGridDelegateWithFixedCrossAxisCount(
+  //                                 crossAxisCount: 2,
+  //                                 mainAxisSpacing: 10,
+  //                                 crossAxisSpacing: 10,
+  //                                 childAspectRatio: 0.7,
+  //                               ),
+  //                               itemBuilder: (context, index) {
+  //                                 return GestureDetector(
+  //                                     onTap: () => Navigator.of(context).push(
+  //                                           MaterialPageRoute(
+  //                                             builder: (context) =>
+  //                                                 MultiBlocProvider(
+  //                                                     providers: [
+  //                                                   BlocProvider.value(
+  //                                                     value:
+  //                                                         CarouselSliderBloc(),
+  //                                                   ),
+  //                                                   BlocProvider.value(
+  //                                                     value: VisibleBloc(),
+  //                                                   ),
+  //                                                 ],
+  //                                                     child: CottageScreen(
+  //                                                         cottages[index],
+  //                                                         false)),
+  //                                           ),
+  //                                         ),
+  //                                     child: CottageWidget(cottages[index]));
+  //                               },
+  //                             );
+  //                           } else {
+  //                             return Container();
+  //                           }
+  //                         },
+  //                       ),

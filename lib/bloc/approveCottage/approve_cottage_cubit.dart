@@ -32,12 +32,25 @@ class ApproveCottageCubit extends Cubit<ApproveCottageState> {
 
       await _cottageRepository.changeStatus(cottage, user.id!);
 
-      final List<Cottage?> availableCottages =
-          await _cottageRepository.getPendingCottages(user.id!);
+      var availableCottages = removeChangedStatus(cottage);
 
       emit(ApproveCottageLoaded(availableCottages));
     } catch (error) {
       emit(ApproveCottageError(error.toString()));
     }
+  }
+
+  List<Cottage?> removeChangedStatus(Cottage cottage) {
+    if (state is ApproveCottageLoaded) {
+      final currentState = state as ApproveCottageLoaded;
+
+      final List<Cottage> currentCottages =
+          List.from(currentState.availableCottages);
+
+      currentCottages.removeWhere((c) => c.id == cottage.id);
+
+      return currentCottages;
+    }
+    return [];
   }
 }

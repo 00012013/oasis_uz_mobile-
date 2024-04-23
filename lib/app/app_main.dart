@@ -45,11 +45,9 @@ class AppMainState extends State<AppMain> {
                 MultiBlocProvider(
                   providers: [
                     BlocProvider(create: (create) => EquipmentBloc()),
-                    BlocProvider(
-                      create: (context) => ImageManagementCubit(),
-                    ),
+                    BlocProvider(create: (context) => ImageManagementCubit()),
                   ],
-                  child: const MyCottagesScreen(),
+                  child: MyCottagesScreen(null, false),
                 ),
                 const MessageScreen(),
                 const UserProfile(),

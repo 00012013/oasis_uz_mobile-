@@ -11,6 +11,7 @@ class PopularCottagesBlocBloc
   final CottageRepository cottageRepository;
   final String favoriteCottageIdsKey = 'favoriteCottageIds';
   List<int> favoriteCottageIds = [];
+  int page = 0;
 
   PopularCottagesBlocBloc(this.cottageRepository)
       : super(PopularCottagesBlocInitial()) {
@@ -19,7 +20,7 @@ class PopularCottagesBlocBloc
         if (event is FetchPopularCottageEvent) {
           try {
             final List<Cottage> cottages =
-                await cottageRepository.fetchPopulaarCottages();
+                await cottageRepository.fetchPopulaarCottages(0, 3);
             Set<int>? loadFavoriteCottageId = await loadFavoriteCottageIds();
 
             if (loadFavoriteCottageId != null &&
@@ -57,6 +58,19 @@ class PopularCottagesBlocBloc
           saveFavoriteCottageIds();
 
           emit(PopularCottagesLoaded(updatedCottages));
+        } else if (event is FetchNextPageEvent) {
+          try {
+            final List<Cottage> cottages =
+                await cottageRepository.fetchPopulaarCottages(++page, 3);
+
+            final List<Cottage> currentCottages =
+                (state as PopularCottagesLoaded).cottages;
+
+            final List<Cottage> allCottages = List.from(currentCottages)
+              ..addAll(cottages);
+
+            emit(PopularCottagesLoaded(allCottages));
+          } catch (e) {}
         }
       },
     );

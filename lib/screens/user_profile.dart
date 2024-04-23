@@ -4,11 +4,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_state.dart';
+import 'package:oasis_uz_mobile/bloc/userCottages/user_cottages_cubit.dart';
 import 'package:oasis_uz_mobile/constants/app_color.dart';
 import 'package:oasis_uz_mobile/repositories/enums/auth_enum.dart';
 import 'package:oasis_uz_mobile/screens/approve_cottages.dart';
 import 'package:oasis_uz_mobile/screens/feedback_screen.dart';
 import 'package:oasis_uz_mobile/screens/language_screen.dart';
+import 'package:oasis_uz_mobile/screens/my_add_screen.dart';
 import 'package:oasis_uz_mobile/screens/sign_in.dart';
 import 'package:oasis_uz_mobile/widgets/custom_text.dart';
 
@@ -132,6 +134,27 @@ class UserProfile extends StatelessWidget {
                         CustomText(
                             text: AppLocalizations.of(context)!.settings,
                             color: Colors.grey),
+                        if (AuthenticationCubit.currentUserRole ==
+                            UserRole.USER)
+                          ListTile(
+                            title: const CustomText(text: "Advertisments"),
+                            leading:
+                                const Icon(Icons.dashboard_customize_rounded),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => BlocProvider(
+                                          create: (context) =>
+                                              UserCottagesCubit(),
+                                          child: const MyAdvertisementsScreen(),
+                                        )),
+                              );
+                            },
+                          ),
                         ListTile(
                           title: CustomText(
                               text:

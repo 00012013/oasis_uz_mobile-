@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:oasis_uz_mobile/constants/api_constants.dart';
@@ -27,8 +28,9 @@ class CottageRepository {
     }
   }
 
-  Future<List<Cottage>> fetchPopulaarCottages() async {
-    final response = await http.get(Uri.parse('$api/api/cottage/get-all'));
+  Future<List<Cottage>> fetchPopulaarCottages(int page, int size) async {
+    final response = await http
+        .get(Uri.parse('$api/api/cottage/get-all/?page=$page&size=$size'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList =
           json.decode(utf8.decode(response.bodyBytes));
@@ -47,7 +49,7 @@ class CottageRepository {
     if (response.statusCode == 200) {
       final List<dynamic> jsonList =
           json.decode(utf8.decode(response.bodyBytes));
-      print(jsonList.first);
+
       final List<Cottage> cottages =
           jsonList.map((json) => Cottage.fromJson(json)).toList();
 
@@ -126,7 +128,6 @@ class CottageRepository {
     var response = await request.send();
 
     if (response.statusCode == 200) {
-      await response.stream.bytesToString();
       return true;
     } else {
       return false;
@@ -158,7 +159,6 @@ class CottageRepository {
     var response = await request.send();
 
     if (response.statusCode == 200) {
-      await response.stream.bytesToString();
       return true;
     } else {
       return false;
@@ -224,5 +224,66 @@ class CottageRepository {
 
     if (response.statusCode == 200) {
     } else {}
+  }
+
+  Future<List<Cottage?>> getUserCottages(int userId) async {
+    var token = await _authenticationRepository.retrieveToken();
+    final url = Uri.parse('$api/api/cottage/get/user-cottages/$userId');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList =
+          json.decode(utf8.decode(response.bodyBytes));
+      final List<Cottage> cottages =
+          jsonList.map((json) => Cottage.fromJson(json)).toList();
+      return cottages;
+    } else {
+      return [];
+    }
+  }
+
+  Future<void> updateCottage(Cottage cottageDTO, int userId) async {
+    var token = await _authenticationRepository.retrieveToken();
+
+    final response = await http.post(
+      Uri.parse('$api/api/cottage-attachment/update/$userId'),
+      body: jsonEncode(cottageDTO.toJson()),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      print('Exception updating cottage');
+    }
+  }
+
+  Future<void> removeFiles(List<int?> attachmentIds) async {
+    var token = await _authenticationRepository.retrieveToken();
+
+    final response = await http.post(
+      Uri.parse('$api/api/cottage-attachment/delete-attachments'),
+      body: jsonEncode(attachmentIds),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      print('Exception removing files');
+    }
   }
 }

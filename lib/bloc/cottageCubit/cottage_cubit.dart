@@ -14,21 +14,23 @@ import 'package:oasis_uz_mobile/widgets/custom_snackbar.dart';
 part 'cottage_state.dart';
 
 class CottageCubit extends Cubit<Cottage> {
-  CottageRepository cottageRepository = CottageRepository();
+  final CottageRepository _cottageRepository = CottageRepository();
   CottageCubit()
-      : super(Cottage(
-          mainAttachment: const Attachment(),
-          attachmentsList: [],
-          name: '',
-          weekDaysPrice: 0,
-          weekendDaysPrice: 0,
-          description: '',
-          guestCount: 0,
-          latitude: null,
-          longitude: null,
-          totalRoomCount: null,
-          equipmentsList: null,
-        ));
+      : super(
+          Cottage(
+            mainAttachment: const Attachment(),
+            attachmentsList: [],
+            name: '',
+            weekDaysPrice: 0,
+            weekendDaysPrice: 0,
+            description: '',
+            guestCount: 0,
+            latitude: null,
+            longitude: null,
+            totalRoomCount: null,
+            equipmentsList: null,
+          ),
+        );
 
   void updateName(String name) {
     emit(state.copyWith(name: name));
@@ -81,23 +83,72 @@ class CottageCubit extends Cubit<Cottage> {
     return null;
   }
 
+  void removeData() {
+    emit(
+      state.copyWith(
+        attachmentsList: [],
+        name: '',
+        weekDaysPrice: 0,
+        weekendDaysPrice: 0,
+        description: '',
+        guestCount: 0,
+        latitude: null,
+        longitude: null,
+        totalRoomCount: null,
+        equipmentsList: null,
+      ),
+    );
+  }
+
   Future<void> addCottage(Cottage cottageDTO, int userId, List<Asset> files,
       List<Asset> mainFile, BuildContext context) async {
-    Cottage? cottage = await cottageRepository.addCottage(cottageDTO, userId);
+    Cottage? cottage = await _cottageRepository.addCottage(cottageDTO, userId);
     if (cottage != null) {
-      bool uploadFiles =
-          await cottageRepository.uploadFiles(files, cottage.id!);
-      bool uploadMainFile =
-          await cottageRepository.uploadMainFile(mainFile, cottage.id!);
+      _cottageRepository.uploadFiles(files, cottage.id!);
+      _cottageRepository.uploadMainFile(mainFile, cottage.id!);
       CustomSnackBar(backgroundColor: Colors.green).showError(
         context,
         "Saved",
       );
+
       return;
     }
     CustomSnackBar(backgroundColor: Colors.red).showError(
       context,
       "Failed to save",
     );
+  }
+
+  Future<void> updateCottage(
+      Cottage cottageDTO,
+      int userId,
+      Object? mainFile,
+      List<Object?> attachments,
+      List<int> removedAttachments,
+      BuildContext context) async {
+    try {
+      _cottageRepository.updateCottage(cottageDTO, userId);
+
+      if (removedAttachments.isNotEmpty) {
+        _cottageRepository.removeFiles(removedAttachments);
+      }
+      if (mainFile is List<Asset> && mainFile.isNotEmpty) {
+        _cottageRepository.uploadMainFile(mainFile, cottageDTO.id!);
+      }
+      if (attachments is List<Asset> && attachments.isNotEmpty) {
+        _cottageRepository.uploadFiles(attachments, cottageDTO.id!);
+      }
+      // ignore: use_build_context_synchronously
+      CustomSnackBar(backgroundColor: Colors.green).showError(
+        context,
+        "Saved",
+      );
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      CustomSnackBar(backgroundColor: Colors.red).showError(
+        context,
+        "Failed to update",
+      );
+    }
   }
 }

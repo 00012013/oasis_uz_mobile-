@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oasis_uz_mobile/app/app_main.dart';
 import 'package:oasis_uz_mobile/bloc/approveCottage/approve_cottage_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/authentication/authentication_cubit.dart';
+import 'package:oasis_uz_mobile/bloc/connectivityCubit/connectivity_cubit_cubit.dart';
+import 'package:oasis_uz_mobile/bloc/cottage/cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/cottageCubit/cottage_cubit.dart';
 import 'package:oasis_uz_mobile/bloc/filter_cottage/filter_cottage_bloc.dart';
 import 'package:oasis_uz_mobile/bloc/navigation/navigation_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:oasis_uz_mobile/bloc/popular_cottages/popular_cottages_bloc_bloc
 import 'package:oasis_uz_mobile/constants/language_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:oasis_uz_mobile/main.dart';
 import 'package:oasis_uz_mobile/repositories/authentication_repository.dart';
 import 'package:oasis_uz_mobile/repositories/cottage_repository.dart';
 import 'package:oasis_uz_mobile/util/language.dart';
@@ -30,11 +33,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late final AuthenticationCubit authenticationCubit;
-
+  late final ConnectivityCubit connectivityCubit;
   @override
   void initState() {
     super.initState();
     authenticationCubit = AuthenticationCubit(AuthenticationRepository());
+    connectivityCubit = ConnectivityCubit();
+    connectivityCubit.checkConnectivity();
     authenticationCubit.initialize();
     _getLocaleFromPreferences();
   }
@@ -81,6 +86,9 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => connectivityCubit,
+        ),
+        BlocProvider(
           create: (context) => PopularCottagesBlocBloc(CottageRepository()),
         ),
         BlocProvider(
@@ -95,8 +103,12 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => ApproveCottageCubit(),
         ),
+        BlocProvider(
+          create: (context) => CottageBloc(CottageRepository()),
+        ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         locale: _locale,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,

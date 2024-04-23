@@ -7,10 +7,8 @@ abstract class CottageState {
 
 final class CottageInitial extends CottageState {}
 
-final class CottageLoading extends CottageState {}
-
 class CottagesLoaded extends CottageState {
-  final List<Cottage> cottages;
+  final List<AppBannerImages> cottages;
 
   const CottagesLoaded(this.cottages);
 }

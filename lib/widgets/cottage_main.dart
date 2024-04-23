@@ -47,6 +47,7 @@ class _CottageWidgetState extends State<CottageWidget> {
                       ? CustomImage(
                           widget.cottage.mainAttachment!.id.toString(),
                           10,
+                          false,
                           false)
                       : null,
                 ),
